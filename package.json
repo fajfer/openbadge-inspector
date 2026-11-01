@@ -14,7 +14,7 @@
     "dev": "npm run build && web-ext run -s dist",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "lint": "eslint .",
+    "lint": "eslint . && node scripts/check-no-comments.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "ext:lint": "web-ext lint -s dist"
