@@ -19,10 +19,18 @@
     "scripts": ["background.js"]
   },
   "action": {
-    "default_title": "__MSG_actionTitle__"
+    "default_title": "__MSG_actionTitle__",
+    "default_icon": {
+      "16": "icons/icon.svg",
+      "32": "icons/icon.svg"
+    }
   },
   "options_ui": {
     "page": "options.html",
     "open_in_tab": false
+  },
+  "icons": {
+    "48": "icons/icon.svg",
+    "96": "icons/icon.svg"
   }
 }

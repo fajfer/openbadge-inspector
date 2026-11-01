@@ -17,7 +17,10 @@
     "lint": "eslint . && node scripts/check-no-comments.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "ext:lint": "web-ext lint -s dist"
+    "ext:lint": "web-ext lint -s dist",
+    "test:e2e": "npm run build && vitest run --config vitest.e2e.config.ts",
+    "fixtures": "node tests/fixtures/build-fixtures.ts",
+    "demo": "npm run build && node scripts/demo.ts"
   },
   "dependencies": {
     "jsonld": "^9.0.0",

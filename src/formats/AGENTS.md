@@ -5,31 +5,24 @@ SPDX-License-Identifier: EUPL-1.2
 -->
 # formats: OB 2.0 and OB 3.0 parsing
 
-> Status: planned. Nothing here is implemented yet; the [v1 spec](../../.ai/specs/2026-11-01-v1-mvp.md) builds it. Update this file when the code differs.
-
 ## Purpose
 
-Zod schemas for Open Badges 2.0 and 3.0, and normalisation of either version into a single `BadgeSummary` that the UI
-and verifiers use.
+Zod schemas for Open Badges 2.0 and 3.0, and normalisation of either into one `BadgeSummary` for the UI and verifiers.
 
 ## Files
 
-- `ob2/assertion.schema.ts`, `ob2/badge-class.schema.ts`, `ob2/issuer.schema.ts`: 1EdTech OB 2.0 vocabulary.
-- `ob2/parse.ts`: handles a hosted URL (summary with `needsOnline: true`, only the URL known), embedded JSON, and
-  JWS (header + payload decoded, signature kept for verifiers).
-- `ob3/credential.schema.ts`: `OpenBadgeCredential` / `AchievementCredential` (VC Data Model 2.0, with 1.1
-  `issuanceDate`/`expirationDate` accepted as aliases).
-- `ob3/parse.ts`: JSON-LD credential or compact VC-JWT.
-- `summary.ts`: `BadgeSummary` builder: `specVersion`, `name`, `description`, `image`, `issuer { name, url, id }`,
-  `issuedAt`, `expiresAt`, `recipient { type, hashed }`, `proof` (kind + raw), `sources` (for verifiers).
+- `ob2/assertion.schema.ts`, `ob2/badge-class.schema.ts`, `ob2/issuer.schema.ts`, `ob2/parse.ts`: hosted URL,
+  assertion JSON and JWS. `summariseAssertion` is reused by online verifiers on fetched documents.
+- `ob3/credential.schema.ts`, `ob3/parse.ts`: JSON-LD credential or compact VC-JWT (`vc` claim or the payload
+  itself). VC 1.1 `issuanceDate`/`expirationDate` are accepted as aliases.
+- `summary.ts` (`withDefined`, `unrecognisedSummary`), `dates.ts`, `schema-issues.ts` (first five issues with paths).
 
 ## Contracts
 
-- `@context` decides the version: `https://w3id.org/openbadges/v2` → OB2; `https://purl.imsglobal.org/spec/ob/v3p0/context*.json` → OB3.
-- Schemas are permissive on unknown fields (`.passthrough()`) and strict on the fields we display or verify.
-- Embedded objects (BadgeClass, Issuer) may be inline objects or IRIs; an IRI leaves the field marked as
-  needing an online lookup.
-- A schema failure is a `ParseResult` error with a path, which the verifiers turn into a failing `schema` check.
+- The summary is built tolerantly from the raw JSON; the schema result only fills `schemaIssues`, which the
+  `schema` check reports. A badge with schema issues is shown, but as invalid.
+- OB 3.0 is detected by a VC or OB 3.0 `@context`; OB 2.0 by its `@context`, or by `recipient` + `badge` without one.
+  OB 3.0 is registered first.
 
 ## Validate
 

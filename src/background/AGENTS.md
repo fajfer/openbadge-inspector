@@ -3,33 +3,29 @@ SPDX-FileCopyrightText: 2026 Damian Fajfer <damian@fajfer.org>
 
 SPDX-License-Identifier: EUPL-1.2
 -->
-# background: menus, toolbar, permissions, cross-origin fetch
-
-> Status: planned. Nothing here is implemented yet; the [v1 spec](../../.ai/specs/2026-11-01-v1-mvp.md) builds it. Update this file when the code differs.
+# background: menu, toolbar, permissions, image fetch, inspection
 
 ## Purpose
 
-MV3 event page ([ADR-007](../../.ai/adr/ADR-007-mv3-desktop-esr.md)). It owns everything that needs extension
-privileges: the context menu, the toolbar action, permission prompts, injecting the content script, and fetching
-image bytes or (online mode) verification resources.
+MV3 event page ([ADR-007](../../.ai/adr/ADR-007-mv3-desktop-esr.md)). Everything that needs extension privileges, plus the
+inspection pipeline itself.
 
 ## Files
 
-- `index.ts`: registers listeners at top level (event pages need this to wake up).
-- `menus.ts`: `menus.create` for `contexts: ['image']` → *Inspect Open Badge*; on click injects the content
-  script into the tab if needed and sends `inspect-image`.
-- `action.ts`: toolbar click → inject + `scan-page`; badge text = number of baked images found.
-- `inject.ts`: `scripting.executeScript` with the built content script, idempotent per tab.
-- `fetch-image.ts`: fetches bytes for a content script (`credentials: 'omit'`, 10 MiB cap, image MIME types only).
-- `permissions.ts`: requests `<all_urls>` from a user gesture only.
-- `session-cache.ts`: `storage.session` cache of inspection and online-verification results per URL.
+- `index.ts`: top-level listeners (menu, toolbar, messages, storage, permissions). Messages from content scripts:
+  `inspect`, `report`, `card-shown`, `open-options`. From extension pages only: `scan-tab`, `inspect-in-tab`,
+  `get-tab-report` (used by the E2E suite).
+- `inspection.ts`: runs the registry; in-memory cache of URL results (300 entries); online only if the setting is on.
+- `fetch-image.ts`: re-fetches the image (`force-cache`, 10 MiB cap); tells `needs-permission` from `fetch-failed`.
+- `permissions.ts`: on a menu click, asks synchronously for the image's origin when it differs from the tab's.
+- `tabs.ts`: injects `content.js`, sends requests, keeps per-tab reports, sets the toolbar badge count.
+- `auto-scan.ts`: registers or unregisters the auto-scan content script from settings and permissions.
 
 ## Contracts
 
-- Event pages can be unloaded at any time: no state in module globals.
-- `fetch-image` refuses non-`http(s):` URLs and is answered only for tabs the extension injected.
-- `permissions.request` must be called synchronously inside the user-action handler.
+- No state that must survive the event page being unloaded; caches are only optimisations.
+- `permissions.request` must be called synchronously in the user-action handler.
 
 ## Validate
 
-`npx vitest run src/background` and `npm run test:e2e`.
+`npm run test:e2e`.

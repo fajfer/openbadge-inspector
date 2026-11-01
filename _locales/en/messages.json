@@ -8,7 +8,304 @@
   "actionTitle": {
     "message": "Scan this page for Open Badges"
   },
+  "menuInspect": {
+    "message": "Inspect Open Badge"
+  },
   "optionsTitle": {
     "message": "OpenBadge Inspector settings"
+  },
+  "statusVerified": {
+    "message": "Verified Open Badge"
+  },
+  "statusUnverified": {
+    "message": "Open Badge, not verified"
+  },
+  "statusExpired": {
+    "message": "Expired Open Badge"
+  },
+  "statusInvalid": {
+    "message": "Invalid Open Badge"
+  },
+  "statusNotBaked": {
+    "message": "Not an Open Badge"
+  },
+  "statusUnreadable": {
+    "message": "Couldn't read this image"
+  },
+  "notBakedExplanation": {
+    "message": "Not an Open Badge: this image contains no Open Badges data. (Badges re-uploaded or resized by some sites lose this data.)"
+  },
+  "unreadableFetchFailed": {
+    "message": "The image couldn't be downloaded again for inspection."
+  },
+  "unreadableNeedsPermission": {
+    "message": "OpenBadge Inspector needs permission to read images from $ORIGIN$. Right-click the image and choose “Inspect Open Badge” to allow it.",
+    "placeholders": {
+      "origin": {
+        "content": "$1"
+      }
+    }
+  },
+  "unreadableImageCorrupt": {
+    "message": "The image file is damaged, so its metadata can't be read."
+  },
+  "unreadableImageTooLarge": {
+    "message": "The image is larger than 10 MB, so it wasn't inspected."
+  },
+  "unreadablePayloadTooLarge": {
+    "message": "The badge data in this image is larger than 1 MB, so it wasn't inspected."
+  },
+  "unreadableUnsupportedSource": {
+    "message": "This kind of image can't be inspected."
+  },
+  "expiredOn": {
+    "message": "Expired on $DATE$",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
+  },
+  "fieldIssuer": {
+    "message": "Issuer"
+  },
+  "fieldIssued": {
+    "message": "Issued"
+  },
+  "fieldExpires": {
+    "message": "Expires"
+  },
+  "fieldStandard": {
+    "message": "Standard"
+  },
+  "fieldRecipient": {
+    "message": "Recipient"
+  },
+  "valueNever": {
+    "message": "Never"
+  },
+  "valueNotStated": {
+    "message": "Not stated"
+  },
+  "valueHashed": {
+    "message": "$TYPE$ (hashed)",
+    "placeholders": {
+      "type": {
+        "content": "$1"
+      }
+    }
+  },
+  "specOb2": {
+    "message": "Open Badges 2.0"
+  },
+  "specOb3": {
+    "message": "Open Badges 3.0"
+  },
+  "specUnknown": {
+    "message": "Unrecognised format"
+  },
+  "untitledBadge": {
+    "message": "Untitled badge"
+  },
+  "badgeDetailsHosted": {
+    "message": "The badge details are hosted by the issuer. Verify online to load them."
+  },
+  "checksHeading": {
+    "message": "Checks"
+  },
+  "checkSchema": {
+    "message": "Structure"
+  },
+  "checkAuthenticity": {
+    "message": "Authenticity"
+  },
+  "checkRevocation": {
+    "message": "Revocation"
+  },
+  "checkIssued": {
+    "message": "Issue date"
+  },
+  "checkExpiry": {
+    "message": "Expiry"
+  },
+  "checkPass": {
+    "message": "Passed"
+  },
+  "checkFail": {
+    "message": "Failed"
+  },
+  "checkNotRun": {
+    "message": "Not checked"
+  },
+  "reasonSchemaValid": {
+    "message": "Matches the Open Badges data model."
+  },
+  "reasonSchemaInvalid": {
+    "message": "Doesn't match the Open Badges data model."
+  },
+  "reasonSignatureValid": {
+    "message": "The issuer's signature is valid."
+  },
+  "reasonSignatureInvalid": {
+    "message": "The signature doesn't match: the badge was changed or not signed by this issuer."
+  },
+  "reasonHostedMatch": {
+    "message": "Matches the copy hosted by the issuer."
+  },
+  "reasonHostedMismatch": {
+    "message": "Differs from the copy hosted by the issuer."
+  },
+  "reasonHostedUnreachable": {
+    "message": "The issuer's copy couldn't be loaded."
+  },
+  "reasonNeedsOnline": {
+    "message": "Needs an online check with the issuer."
+  },
+  "reasonKeyUnresolved": {
+    "message": "The issuer's public key couldn't be found."
+  },
+  "reasonUnsupportedAlgorithm": {
+    "message": "Uses a method this extension doesn't support yet."
+  },
+  "reasonUnknownContext": {
+    "message": "Uses a vocabulary this extension can't load offline."
+  },
+  "reasonCanonicalisationLimit": {
+    "message": "The credential is too complex to check here."
+  },
+  "reasonNotRevoked": {
+    "message": "Not revoked by the issuer."
+  },
+  "reasonRevoked": {
+    "message": "Revoked by the issuer."
+  },
+  "reasonStatusUnreachable": {
+    "message": "The issuer's revocation status couldn't be loaded."
+  },
+  "reasonIssuedOk": {
+    "message": "Issued on $DATE$.",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
+  },
+  "reasonIssuedInFuture": {
+    "message": "Claims to be issued in the future ($DATE$).",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
+  },
+  "reasonIssuedMissing": {
+    "message": "Has no issue date."
+  },
+  "reasonNotExpired": {
+    "message": "Valid until $DATE$.",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
+  },
+  "reasonNoExpiry": {
+    "message": "Doesn't expire."
+  },
+  "reasonExpired": {
+    "message": "Expired on $DATE$.",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
+  },
+  "buttonVerifyOnline": {
+    "message": "Verify online"
+  },
+  "buttonVerifying": {
+    "message": "Checking with the issuer…"
+  },
+  "buttonClose": {
+    "message": "Close"
+  },
+  "buttonSettings": {
+    "message": "Settings"
+  },
+  "onlineHint": {
+    "message": "Turn on online verification in the settings to check this badge with its issuer."
+  },
+  "onlineChecked": {
+    "message": "Checked with the issuer just now."
+  },
+  "multiplePayloads": {
+    "message": "This image contains $COUNT$ badges. Showing the first one.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "iconTitle": {
+    "message": "$STATUS$. Click for details.",
+    "placeholders": {
+      "status": {
+        "content": "$1"
+      }
+    }
+  },
+  "scanSummaryNone": {
+    "message": "No Open Badges found ($COUNT$ images checked).",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "scanSummaryFound": {
+    "message": "Found $FOUND$ Open Badges in $COUNT$ images.",
+    "placeholders": {
+      "found": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      }
+    }
+  },
+  "scanSummaryOne": {
+    "message": "Found 1 Open Badge in $COUNT$ images.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "scanInProgress": {
+    "message": "Looking for Open Badges…"
+  },
+  "optionAutoScan": {
+    "message": "Scan every page automatically"
+  },
+  "optionAutoScanHelp": {
+    "message": "Marks badges as soon as a page loads. Needs access to all websites. When this is off, scan a page with the toolbar button or right-click an image."
+  },
+  "optionOnline": {
+    "message": "Allow online verification"
+  },
+  "optionOnlineHelp": {
+    "message": "Adds a “Verify online” button to badges. The issuer's servers are contacted only when you click it, and they can see that you checked the badge. Needs access to all websites."
+  },
+  "optionNotBakedIcons": {
+    "message": "Mark images that aren't badges"
+  },
+  "optionNotBakedIconsHelp": {
+    "message": "Shows a grey marker on every scanned image without badge data."
+  },
+  "optionPermissionDenied": {
+    "message": "Firefox didn't grant access to websites, so this setting stays off."
+  },
+  "optionsPrivacy": {
+    "message": "OpenBadge Inspector reads image metadata on your device. It collects no data and sends nothing anywhere unless you click “Verify online”."
   }
 }

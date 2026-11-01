@@ -8,3 +8,8 @@
 /LICENSE
 package-lock.json
 *.md
+/tests/fixtures/online/
+/tests/fixtures/pages/
+/tests/fixtures/keys/
+/tests/fixtures/w3c/
+/src/verifiers/contexts/*.json
