@@ -72,8 +72,8 @@ detail lives next to the code. Decisions live in [.ai/adr](.ai/adr/README.md).
 | Extension lint | `npm run build && npm run ext:lint` |
 | Licensing | `reuse lint` |
 
-`test:e2e` is added by task 13 of the [v1 spec](.ai/specs/2026-11-01-v1-mvp.md). Build entry points and static
-files are listed in `scripts/build.ts` (run with Node 24's built-in TypeScript support).
+Try the extension on the test gallery with `npm run demo`. Build entry points and static files are listed in
+`scripts/build.ts` (run with Node 24's built-in TypeScript support).
 
 ## Task Router
 
@@ -89,9 +89,9 @@ Shorthand: `<area>` means `<area>/AGENTS.md`. Read root + the listed files, noth
 | Info card look, text or fields | [ui](src/ui/AGENTS.md), [ADR-006](.ai/adr/ADR-006-overlay-card-and-status-icons.md) |
 | Right-click menu, toolbar button, permissions, fetching image bytes | [background](src/background/AGENTS.md), [ADR-007](.ai/adr/ADR-007-mv3-desktop-esr.md) |
 | Options page, stored settings | [settings](src/settings/AGENTS.md) |
-| Messages between background and content script | [background](src/background/AGENTS.md), [content](src/content/AGENTS.md) |
+| Messages between background and content script | [background](src/background/AGENTS.md), [content](src/content/AGENTS.md), `src/messaging/messages.ts` |
 | Test fixtures, unit or E2E tests | [tests](tests/AGENTS.md), [ADR-011](.ai/adr/ADR-011-vitest-and-selenium.md) |
-| Build, manifest, CI, AMO submission | [ADR-008](.ai/adr/ADR-008-typescript-zod-vite-web-ext.md), [ADR-013](.ai/adr/ADR-013-amo-public-listing.md) |
+| Build, manifest, CI, AMO submission | [ADR-008](.ai/adr/ADR-008-typescript-zod-vite-web-ext.md), [ADR-013](.ai/adr/ADR-013-amo-public-listing.md), [ADR-015](.ai/adr/ADR-015-no-eval-in-bundle.md) |
 | Record a decision | [.ai/adr](.ai/adr/README.md) |
 | Plan a 3+ step task | [.ai/specs](.ai/specs/README.md) |
 

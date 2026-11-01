@@ -33,3 +33,4 @@ Decisions that future work must respect. Read an ADR only when the Task Router, 
 | [ADR-012](ADR-012-english-ui-through-i18n.md) | English-only UI, all strings through browser.i18n | Accepted | 2026-11-01 |
 | [ADR-013](ADR-013-amo-public-listing.md) | Public listing on addons.mozilla.org | Accepted | 2026-11-01 |
 | [ADR-014](ADR-014-bundled-jsonld-canonicalisation.md) | Bundle JSON-LD canonicalisation for offline eddsa-rdfc-2022 | Accepted | 2026-11-01 |
+| [ADR-015](ADR-015-no-eval-in-bundle.md) | Remove eval paths from dependencies at build time | Accepted | 2026-11-02 |
