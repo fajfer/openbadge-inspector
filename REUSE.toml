@@ -1,0 +1,10 @@
+# SPDX-FileCopyrightText: 2026 Damian Fajfer <damian@fajfer.org>
+#
+# SPDX-License-Identifier: EUPL-1.2
+
+version = 1
+
+[[annotations]]
+path = ["package.json", "package-lock.json", "tsconfig.json", ".prettierrc.json", "manifest.json", "_locales/**/*.json", ".ai/specs/implemented/.gitkeep"]
+SPDX-FileCopyrightText = "2026 Damian Fajfer <damian@fajfer.org>"
+SPDX-License-Identifier = "EUPL-1.2"

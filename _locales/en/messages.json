@@ -1,0 +1,14 @@
+{
+  "extensionName": {
+    "message": "OpenBadge Inspector"
+  },
+  "extensionDescription": {
+    "message": "Finds Open Badges baked into images on a page and shows whether they are valid."
+  },
+  "actionTitle": {
+    "message": "Scan this page for Open Badges"
+  },
+  "optionsTitle": {
+    "message": "OpenBadge Inspector settings"
+  }
+}
