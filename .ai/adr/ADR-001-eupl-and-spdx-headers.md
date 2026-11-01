@@ -16,7 +16,9 @@ The maintainer's projects use EUPL-1.2 with SPDX headers on every file (as in fa
 
 ## Decision
 
+<!-- REUSE-IgnoreStart -->
 The project is licensed under EUPL-1.2. Every file carries `SPDX-FileCopyrightText: <years> Damian Fajfer <damian@fajfer.org>` and `SPDX-License-Identifier: EUPL-1.2` in its own comment style. Files that cannot hold a comment (JSON, PNG/SVG fixtures, lockfiles) are covered by a `<file>.license` sidecar or an annotation in `REUSE.toml`. The repo is REUSE-compliant and `reuse lint` runs in CI.
+<!-- REUSE-IgnoreEnd -->
 
 ## Consequences
 
