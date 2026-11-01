@@ -45,6 +45,21 @@ npx web-ext build -s dist   # packs dist/ into web-ext-artifacts/*.zip
 
 The build is not minified, and the same commit always produces the same `dist/`.
 
+## Verifying a release
+
+Every GitHub Release contains the extension zip, the source zip, CycloneDX and SPDX SBOMs, `SHA256SUMS` and SLSA
+Build L3 provenance (`openbadge-inspector.intoto.jsonl`). Check a download with
+[slsa-verifier](https://github.com/slsa-framework/slsa-verifier):
+
+```sh
+slsa-verifier verify-artifact openbadge-inspector-0.1.0.zip \
+  --provenance-path openbadge-inspector.intoto.jsonl \
+  --source-uri github.com/fajfer/openbadge-inspector \
+  --source-tag v0.1.0
+```
+
+The add-on installed from addons.mozilla.org is this zip plus Mozilla's signature.
+
 ## Development
 
 | Task | Command |

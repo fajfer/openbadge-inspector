@@ -52,7 +52,8 @@ Privacy & Security; Search Tools
 
 ## Notes to reviewer
 
-Source: this repository at the submitted tag. Build: Node.js 24, `npm ci && npm run build`; the output in `dist/` is
+Upload `openbadge-inspector-<version>.zip` and `openbadge-inspector-<version>-source.zip` from the GitHub Release
+(SLSA Build L3 provenance attached). Source: this repository at the submitted tag. Build: Node.js 24, `npm ci && npm run build`; the output in `dist/` is
 not minified and is reproducible. `jsonld` is bundled for offline RDF canonicalisation of Open Badges 3.0
 credentials; it uses only bundled contexts and never fetches remote ones. Eval code paths in Zod and the
 `setimmediate` polyfill are removed at build time (`scripts/build.ts`).

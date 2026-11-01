@@ -92,6 +92,7 @@ Shorthand: `<area>` means `<area>/AGENTS.md`. Read root + the listed files, noth
 | Messages between background and content script | [background](src/background/AGENTS.md), [content](src/content/AGENTS.md), `src/messaging/messages.ts` |
 | Test fixtures, unit or E2E tests | [tests](tests/AGENTS.md), [ADR-011](.ai/adr/ADR-011-vitest-and-selenium.md) |
 | Build, manifest, CI, AMO submission | [ADR-008](.ai/adr/ADR-008-typescript-zod-vite-web-ext.md), [ADR-013](.ai/adr/ADR-013-amo-public-listing.md), [ADR-015](.ai/adr/ADR-015-no-eval-in-bundle.md) |
+| Release, provenance, SBOMs | [ADR-016](.ai/adr/ADR-016-slsa-build-l3-releases.md), `.github/workflows/release.yml` |
 | Record a decision | [.ai/adr](.ai/adr/README.md) |
 | Plan a 3+ step task | [.ai/specs](.ai/specs/README.md) |
 
