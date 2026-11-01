@@ -24,6 +24,10 @@ and drives the [ui](../ui/AGENTS.md) overlay.
 
 ## Gotchas
 
+- An `http:` image on an `https:` page is read over `https:` (`upgradeInsecureUrl`), matching Firefox's mixed-content
+  upgrade; the plain `http:` request would be blocked.
+- Page scans don't mark images that couldn't be read; opening the card on one (right-click) still does.
+
 - Bytes from `fetch` in a content script belong to the page's compartment: spreading or iterating them throws
   "Permission denied to access property constructor". `copyBytes` copies them by index first.
 - MV3 content scripts have no `content.fetch`.

@@ -62,9 +62,12 @@ export function createController(deps: ControllerDeps): Controller {
     return entry.result;
   };
 
-  const mark = async (element: Candidate, result: InspectionResult) => {
+  const mark = async (element: Candidate, result: InspectionResult, fromScan: boolean) => {
     const settings = await deps.settings();
-    if (BADGE_STATUSES.has(result.status) || settings.showNotBakedMarkers) {
+    if (fromScan && result.status === "unreadable") {
+      return;
+    }
+    if (BADGE_STATUSES.has(result.status) || settings.showNotBakedMarkers || !fromScan) {
       deps.overlay.setMarker(element, result.status, () => {
         void openCard(element);
       });
@@ -108,7 +111,7 @@ export function createController(deps: ControllerDeps): Controller {
   const openCard = async (element: Candidate) => {
     const entry = entryFor(element);
     const result = entry.result ?? (await resolve(element, false));
-    await mark(element, result);
+    await mark(element, result, false);
     await showCard(element, result, entry);
     report();
   };
@@ -122,7 +125,7 @@ export function createController(deps: ControllerDeps): Controller {
     await showCard(element, entry.result, entry);
     const result = await resolve(element, true);
     entry.verifying = false;
-    await mark(element, result);
+    await mark(element, result, false);
     if (deps.overlay.cardTarget() === element) {
       await showCard(element, result, entry);
     }
@@ -134,7 +137,7 @@ export function createController(deps: ControllerDeps): Controller {
     const worker = async () => {
       for (let element = queue.shift(); element !== undefined; element = queue.shift()) {
         const result = await resolve(element, false);
-        await mark(element, result);
+        await mark(element, result, true);
       }
     };
     await Promise.all(Array.from({ length: CONCURRENCY }, worker));

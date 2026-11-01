@@ -6,11 +6,12 @@ import type { ExtractResult, Extractor, ImageInput, RawPayload } from "../regist
 import { byteStream, concatBytes, latin1Decode, startsWithBytes, utf8Decode } from "../shared/bytes.ts";
 import { classifyPayload } from "./classify.ts";
 import { crc32 } from "./crc32.ts";
-import { MAX_IMAGE_BYTES, MAX_PAYLOAD_BYTES, OPEN_BADGES_KEYWORD } from "./limits.ts";
+import { LENIENT_KEYWORDS, MAX_IMAGE_BYTES, MAX_PAYLOAD_BYTES, OPEN_BADGES_KEYWORD } from "./limits.ts";
 
 const PNG_SIGNATURE = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a] as const;
 const CHUNK_HEADER_LENGTH = 8;
 const CHUNK_CRC_LENGTH = 4;
+const TEXT_CHUNK_TYPES: ReadonlySet<string> = new Set(["iTXt", "zTXt", "tEXt"]);
 
 interface PngChunk {
   readonly type: string;
@@ -20,8 +21,8 @@ interface PngChunk {
 class PngCorruptError extends Error {}
 class PayloadTooLargeError extends Error {}
 
-export const pngItxtExtractor: Extractor = {
-  id: "png-itxt",
+export const pngExtractor: Extractor = {
+  id: "png",
   accepts: (input: ImageInput) => startsWithBytes(input.bytes, PNG_SIGNATURE),
   extract: extractFromPng,
 };
@@ -33,11 +34,9 @@ async function extractFromPng(input: ImageInput): Promise<ExtractResult> {
   try {
     const payloads: RawPayload[] = [];
     for (const chunk of readChunks(input.bytes)) {
-      if (chunk.type === "iTXt") {
-        const text = await readOpenBadgesText(chunk.data);
-        if (text !== undefined) {
-          payloads.push({ container: "png-itxt", encoding: classifyPayload(text), text });
-        }
+      const payload = TEXT_CHUNK_TYPES.has(chunk.type) ? await payloadFrom(chunk) : undefined;
+      if (payload !== undefined) {
+        payloads.push(payload);
       }
     }
     return payloads.length > 0 ? { kind: "baked", payloads } : { kind: "not-baked" };
@@ -77,10 +76,30 @@ function* readChunks(bytes: Uint8Array<ArrayBuffer>): Generator<PngChunk> {
   throw new PngCorruptError("missing IEND");
 }
 
-async function readOpenBadgesText(data: Uint8Array<ArrayBuffer>): Promise<string | undefined> {
-  const keywordEnd = data.indexOf(0);
-  if (keywordEnd < 0 || latin1Decode(data.subarray(0, keywordEnd)) !== OPEN_BADGES_KEYWORD) {
+async function payloadFrom(chunk: PngChunk): Promise<RawPayload | undefined> {
+  const keywordEnd = chunk.data.indexOf(0);
+  const keyword = keywordEnd < 0 ? undefined : latin1Decode(chunk.data.subarray(0, keywordEnd));
+  if (keyword === undefined || !LENIENT_KEYWORDS.has(keyword)) {
     return undefined;
+  }
+  const text = utf8Decode(await chunkText(chunk, keywordEnd));
+  const encoding = classifyPayload(text);
+  if (chunk.type === "iTXt" && keyword === OPEN_BADGES_KEYWORD) {
+    return { container: "png-itxt", encoding, text };
+  }
+  if (encoding !== "json" && encoding !== "compact-jws") {
+    return undefined;
+  }
+  return { container: "png-text", encoding, text, nonStandard: `${chunk.type} "${keyword}"` };
+}
+
+async function chunkText(chunk: PngChunk, keywordEnd: number): Promise<Uint8Array<ArrayBuffer>> {
+  const data = chunk.data;
+  if (chunk.type === "tEXt") {
+    return capped(data.subarray(keywordEnd + 1));
+  }
+  if (chunk.type === "zTXt") {
+    return inflate(capped(data.subarray(keywordEnd + 2)));
   }
   const compressed = data[keywordEnd + 1] === 1;
   const languageEnd = data.indexOf(0, keywordEnd + 3);
@@ -88,11 +107,15 @@ async function readOpenBadgesText(data: Uint8Array<ArrayBuffer>): Promise<string
   if (translatedEnd < 0) {
     throw new PngCorruptError("malformed iTXt");
   }
-  const text = data.subarray(translatedEnd + 1);
-  if (text.length > MAX_PAYLOAD_BYTES) {
+  const text = capped(data.subarray(translatedEnd + 1));
+  return compressed ? inflate(text) : text;
+}
+
+function capped(bytes: Uint8Array<ArrayBuffer>): Uint8Array<ArrayBuffer> {
+  if (bytes.length > MAX_PAYLOAD_BYTES) {
     throw new PayloadTooLargeError("payload too large");
   }
-  return utf8Decode(compressed ? await inflate(text) : text);
+  return bytes;
 }
 
 async function inflate(bytes: Uint8Array<ArrayBuffer>): Promise<Uint8Array<ArrayBuffer>> {

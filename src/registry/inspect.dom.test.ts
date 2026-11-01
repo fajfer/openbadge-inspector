@@ -53,6 +53,17 @@ describe("inspectImage on the fixture catalogue (offline)", () => {
     expect(result.checks.find((check) => check.id === "authenticity")).toMatchObject({ reason: "needs-online" });
   });
 
+  it("flags badge data stored outside the standard iTXt chunk without failing it", async () => {
+    const result = await inspectImage(registry, fixtureInput("png/ob3-text-openbadges.png"), offline);
+    expect(result.status).toBe("verified");
+    expect(result.checks[0]).toEqual({
+      id: "baking",
+      status: "warn",
+      reason: "non-standard-baking",
+      detail: 'tEXt "openbadges"',
+    });
+  });
+
   it("treats a tampered credential as invalid", async () => {
     const result = await inspectImage(registry, fixtureInput("png/ob3-tampered.png"), offline);
     expect(result.checks.find((check) => check.id === "authenticity")).toMatchObject({

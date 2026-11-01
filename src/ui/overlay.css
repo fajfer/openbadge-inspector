@@ -270,6 +270,9 @@ a {
 .check-fail .check-symbol {
   color: var(--obi-invalid);
 }
+.check-warn .check-symbol {
+  color: var(--obi-unverified);
+}
 .check-not-run .check-symbol {
   color: var(--obi-neutral);
 }

@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: EUPL-1.2
 
-import { pngItxtExtractor } from "../extractors/png-itxt.ts";
+import { pngExtractor } from "../extractors/png.ts";
 import { svgExtractor } from "../extractors/svg.ts";
 import { ob2Format } from "../formats/ob2/parse.ts";
 import { ob3Format } from "../formats/ob3/parse.ts";
@@ -18,7 +18,7 @@ import { createRegistry, type Registry } from "./registry.ts";
 
 export function defaultRegistry(): Registry {
   return createRegistry()
-    .registerExtractor(pngItxtExtractor)
+    .registerExtractor(pngExtractor)
     .registerExtractor(svgExtractor)
     .registerFormat(ob3Format)
     .registerFormat(ob2Format)

@@ -21,6 +21,7 @@ export const STATUS_APPEARANCE: Readonly<Record<BadgeStatus, StatusAppearance>> 
 };
 
 export const CHECK_LABEL: Readonly<Record<CheckId, MessageKey>> = {
+  baking: "checkBaking",
   schema: "checkSchema",
   authenticity: "checkAuthenticity",
   revocation: "checkRevocation",
@@ -30,11 +31,13 @@ export const CHECK_LABEL: Readonly<Record<CheckId, MessageKey>> = {
 
 export const CHECK_STATUS: Readonly<Record<CheckStatus, { symbol: string; label: MessageKey }>> = {
   pass: { symbol: "✓", label: "checkPass" },
+  warn: { symbol: "!", label: "checkWarn" },
   fail: { symbol: "✕", label: "checkFail" },
   "not-run": { symbol: "○", label: "checkNotRun" },
 };
 
 export const REASON_MESSAGE: Readonly<Record<CheckReason, MessageKey>> = {
+  "non-standard-baking": "reasonNonStandardBaking",
   "schema-valid": "reasonSchemaValid",
   "schema-invalid": "reasonSchemaInvalid",
   "signature-valid": "reasonSignatureValid",

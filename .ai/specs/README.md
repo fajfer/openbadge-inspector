@@ -29,3 +29,4 @@ files an agent must read (**Load**), so it can be done with only those files.
 
 | Spec | Goal |
 |---|---|
+| [2026-11-02-real-world-badges](implemented/2026-11-02-real-world-badges.md) | reszka.org badge read and verified, non-standard chunks flagged, quieter scans |
