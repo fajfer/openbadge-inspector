@@ -5,34 +5,31 @@ SPDX-License-Identifier: EUPL-1.2
 -->
 # tests: fixtures, unit and E2E
 
-> Status: planned. The [v1 spec](../.ai/specs/2026-11-01-v1-mvp.md) builds it.
-
 ## Purpose
 
-Fixtures and test tooling ([ADR-011](../.ai/adr/ADR-011-vitest-and-selenium.md)). Unit tests sit next to the code
-as `*.test.ts`; this folder holds what is shared, plus the E2E suite.
+Fixtures and test tooling ([ADR-011](../.ai/adr/ADR-011-vitest-and-selenium.md)). Unit tests sit next to the code as
+`*.test.ts` (Node) or `*.dom.test.ts` (jsdom); this folder holds what is shared, plus the E2E suite.
 
 ## Files
 
-- `fixtures/keys/`: test-only Ed25519 / P-256 keys and `did:key`s. Never used outside tests.
-- `fixtures/build-fixtures.ts`: regenerates every baked fixture from JSON sources and keys (`npm run fixtures`).
-- `fixtures/png/`, `fixtures/svg/`: `ob2-hosted`, `ob2-embedded`, `ob2-signed`, `ob3-jsonld-didkey`,
-  `ob3-vcjwt-didkey`, `ob3-expired`, `ob3-tampered`, `plain` (not baked), `stripped` (re-encoded copy),
-  `corrupt-crc`, `oversized`, `malformed-json`, `ob1-text` (must read as not baked).
-- `fixtures/1edtech/`: OB 3.0 sample credentials from the 1EdTech conformance suite, unchanged, with their
-  upstream licence recorded in `REUSE.toml` and the source commit in `fixtures/1edtech/SOURCE.md`.
-- `fixtures/pages/`: HTML pages for E2E (img, picture/srcset, lazy, inline svg, object/embed, cross-origin).
-- `e2e/`: `selenium-webdriver` + geckodriver; `setup.ts` builds, installs the temporary add-on and serves pages
-  on two local origins.
+- `fixtures/build-fixtures.ts` (`npm run fixtures`): regenerates every PNG/SVG badge, `online/` documents and
+  `pages/gallery.html`. Output is byte-for-byte reproducible; CI checks this.
+- `fixtures/catalog.ts`: every fixture with its expected offline status. Unit and E2E tests both use it.
+- `fixtures/keys/`: test-only Ed25519 and RSA keys, created on the first run. Never use them elsewhere.
+- `fixtures/credentials.ts`, `images.ts`, `gallery.ts`, `load.ts`, `fake-http.ts`: builders and helpers.
+- `fixtures/w3c/`: W3C `vc-di-eddsa` test vectors (W3C licence, see `REUSE.toml`).
+- `e2e/`: `firefox.ts` (Selenium + geckodriver, extension installed as a temporary add-on, extension pages opened
+  through the chrome context), `server.ts` (fixtures on `127.0.0.1:8765` and `localhost:8766`),
+  `extension.e2e.ts`.
 
 ## Contracts
 
-- Every fixture image has a matching `.license` sidecar or `REUSE.toml` entry.
-- Tests pass a fixed `now`; never compare with the real clock.
-- No test makes a real network request: online verifiers get a fake `fetchJson`; E2E serves issuer documents
-  from the local server.
-- Native context menus can't be clicked from Selenium; E2E sends the same `inspect-image` message the menu item sends.
+- Pass a fixed `now` (`FIXTURE_NOW`); never compare with the real clock. Gallery badges are valid until 2031.
+- No test makes a real network request: online verifiers get `fakeHttp`.
+- Selenium can't click native menus or the toolbar; E2E sends `scan-tab` / `inspect-in-tab` from the options page,
+  which run the same code paths.
+- 1EdTech samples are not included: their repository states no licence.
 
 ## Validate
 
-`npm test`, `npm run test:e2e`
+`npm test`, `npm run test:e2e` (`E2E_HEADED=1` to watch, `E2E_SCREENSHOTS=<dir>` to save screenshots).

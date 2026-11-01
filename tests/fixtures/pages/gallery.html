@@ -1,0 +1,139 @@
+<!doctype html>
+<!--
+SPDX-FileCopyrightText: 2026 Damian Fajfer <damian@fajfer.org>
+
+SPDX-License-Identifier: EUPL-1.2
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>OpenBadge Inspector test gallery</title>
+    <style>
+      body { font-family: system-ui, sans-serif; margin: 24px; max-width: 1100px; }
+      .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
+      figure { margin: 0; padding: 12px; border: 1px solid #ddd; border-radius: 8px; text-align: center; }
+      figcaption { font-size: 13px; margin-top: 8px; }
+      .spacer { height: 1600px; }
+    </style>
+  </head>
+  <body>
+    <h1>OpenBadge Inspector test gallery</h1>
+    <p>Every image below is a generated test badge. Use the toolbar button or right-click an image.</p>
+    <h2>Fixture catalogue</h2>
+    <div class="grid">
+      <figure>
+        <img src="../png/ob3-rdfc.png" alt="OB 3.0, eddsa-rdfc-2022, did:key" width="128" height="128" />
+        <figcaption>OB 3.0, eddsa-rdfc-2022, did:key<br /><small>Expected: verified</small></figcaption>
+      </figure>
+      <figure>
+        <img src="../png/ob3-rdfc-compressed.png" alt="OB 3.0, compressed iTXt" width="128" height="128" />
+        <figcaption>OB 3.0, compressed iTXt<br /><small>Expected: verified</small></figcaption>
+      </figure>
+      <figure>
+        <img src="../png/ob3-vcjwt.png" alt="OB 3.0, VC-JWT, did:key" width="128" height="128" />
+        <figcaption>OB 3.0, VC-JWT, did:key<br /><small>Expected: verified</small></figcaption>
+      </figure>
+      <figure>
+        <img src="../png/ob3-revocable.png" alt="OB 3.0 with a status list" width="128" height="128" />
+        <figcaption>OB 3.0 with a status list<br /><small>Expected: verified</small></figcaption>
+      </figure>
+      <figure>
+        <img src="../png/ob3-didweb.png" alt="OB 3.0, key on did:web" width="128" height="128" />
+        <figcaption>OB 3.0, key on did:web<br /><small>Expected: not verified</small></figcaption>
+      </figure>
+      <figure>
+        <img src="../png/ob3-expired.png" alt="OB 3.0, expired" width="128" height="128" />
+        <figcaption>OB 3.0, expired<br /><small>Expected: expired</small></figcaption>
+      </figure>
+      <figure>
+        <img src="../png/ob3-tampered.png" alt="OB 3.0, tampered after signing" width="128" height="128" />
+        <figcaption>OB 3.0, tampered after signing<br /><small>Expected: invalid</small></figcaption>
+      </figure>
+      <figure>
+        <img src="../png/ob2-hosted.png" alt="OB 2.0 hosted assertion (embedded)" width="128" height="128" />
+        <figcaption>OB 2.0 hosted assertion (embedded)<br /><small>Expected: not verified</small></figcaption>
+      </figure>
+      <figure>
+        <img src="../png/ob2-hosted-url.png" alt="OB 2.0 hosted URL only" width="128" height="128" />
+        <figcaption>OB 2.0 hosted URL only<br /><small>Expected: not verified</small></figcaption>
+      </figure>
+      <figure>
+        <img src="../png/ob2-signed.png" alt="OB 2.0 signed (JWS)" width="128" height="128" />
+        <figcaption>OB 2.0 signed (JWS)<br /><small>Expected: not verified</small></figcaption>
+      </figure>
+      <figure>
+        <img src="../png/malformed-json.png" alt="Baked but malformed JSON" width="128" height="128" />
+        <figcaption>Baked but malformed JSON<br /><small>Expected: invalid</small></figcaption>
+      </figure>
+      <figure>
+        <img src="../png/ob1-text.png" alt="OB 1.0 tEXt chunk (unsupported)" width="128" height="128" />
+        <figcaption>OB 1.0 tEXt chunk (unsupported)<br /><small>Expected: not a badge</small></figcaption>
+      </figure>
+      <figure>
+        <img src="../png/plain.png" alt="Plain PNG" width="128" height="128" />
+        <figcaption>Plain PNG<br /><small>Expected: not a badge</small></figcaption>
+      </figure>
+      <figure>
+        <img src="../png/corrupt-crc.png" alt="Corrupt PNG (bad CRC)" width="128" height="128" />
+        <figcaption>Corrupt PNG (bad CRC)<br /><small>Expected: unreadable</small></figcaption>
+      </figure>
+      <figure>
+        <img src="../svg/ob3-jcs.svg" alt="OB 3.0 SVG, eddsa-jcs-2022" width="128" height="128" />
+        <figcaption>OB 3.0 SVG, eddsa-jcs-2022<br /><small>Expected: verified</small></figcaption>
+      </figure>
+      <figure>
+        <img src="../svg/ob3-with-script.svg" alt="OB 3.0 SVG with a script element" width="128" height="128" />
+        <figcaption>OB 3.0 SVG with a script element<br /><small>Expected: verified</small></figcaption>
+      </figure>
+      <figure>
+        <img src="../svg/ob2-assertion.svg" alt="OB 2.0 SVG assertion" width="128" height="128" />
+        <figcaption>OB 2.0 SVG assertion<br /><small>Expected: not verified</small></figcaption>
+      </figure>
+      <figure>
+        <img src="../svg/ob2-verify-url.svg" alt="OB 2.0 SVG, verify URL only" width="128" height="128" />
+        <figcaption>OB 2.0 SVG, verify URL only<br /><small>Expected: not verified</small></figcaption>
+      </figure>
+      <figure>
+        <img src="../svg/plain.svg" alt="Plain SVG" width="128" height="128" />
+        <figcaption>Plain SVG<br /><small>Expected: not a badge</small></figcaption>
+      </figure>
+    </div>
+    <h2>Other ways images appear on pages</h2>
+    <div class="grid">
+      <figure>
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:openbadges="http://openbadges.org" width="128" height="128" viewBox="0 0 128 128">
+  <openbadges:credential><![CDATA[{"@context":["https://www.w3.org/ns/credentials/v2","https://purl.imsglobal.org/spec/ob/v3p0/context-3.0.3.json"],"id":"urn:uuid:a63a60be-f4af-491c-87fc-2c8fd3007a58","type":["VerifiableCredential","OpenBadgeCredential"],"issuer":{"id":"did:key:z6MkqJR26QppCTGP6rVmUtiFCfbP2wST9xYHC26HQChA5bjM","type":["Profile"],"name":"Example University","url":"https://university.example"},"validFrom":"2026-01-15T10:00:00Z","validUntil":"2031-01-01T00:00:00Z","name":"Open Badges Practitioner","credentialSubject":{"type":["AchievementSubject"],"identifier":[{"type":"IdentityObject","identityType":"emailAddress","hashed":true,"identityHash":"sha256$c7ef86405ba71b85acd8e2e95166c4b111448089f2e1599f42fe1bba46e865c5","salt":"deadsea"}],"achievement":{"id":"https://university.example/achievements/practitioner","type":["Achievement"],"name":"Open Badges Practitioner","description":"Demonstrated the ability to issue and verify Open Badges 3.0 credentials.","criteria":{"narrative":"Issue three badges and verify them with an independent verifier."}}},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-01-15T10:00:00Z","verificationMethod":"did:key:z6MkqJR26QppCTGP6rVmUtiFCfbP2wST9xYHC26HQChA5bjM#z6MkqJR26QppCTGP6rVmUtiFCfbP2wST9xYHC26HQChA5bjM","proofPurpose":"assertionMethod","proofValue":"z3xHxXCyYfPm153jBUiqYECoHyUjMyi7HdSfgQGEtEaCHhavYQtK3g7SgWZsLd635Q5Ut1pXif4sBLbgf6bhx6gwR"}}]]></openbadges:credential>
+  <circle cx="64" cy="64" r="62" fill="rgb(27,94,32)"/>
+  <circle cx="64" cy="64" r="52" fill="rgb(67,160,71)"/>
+  <text x="64" y="72" font-family="sans-serif" font-size="20" text-anchor="middle" fill="white">OB 3.0</text>
+  
+</svg>
+        <figcaption>Inline SVG (OB 3.0)<br /><small>Expected: verified</small></figcaption>
+      </figure>
+      <figure>
+        <object data="../svg/ob2-assertion.svg" type="image/svg+xml" width="128" height="128"></object>
+        <figcaption>SVG in &lt;object&gt; (OB 2.0)<br /><small>Expected: not verified</small></figcaption>
+      </figure>
+      <figure>
+        <picture><source srcset="../png/ob3-vcjwt.png" type="image/png" /><img src="../png/plain.png" alt="Picture element" width="128" height="128" /></picture>
+        <figcaption>&lt;picture&gt; choosing a badge<br /><small>Expected: verified</small></figcaption>
+      </figure>
+      <figure>
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAFkmlUWHRvcGVuYmFkZ2VzAAAAAAB7IkBjb250ZXh0IjpbImh0dHBzOi8vd3d3LnczLm9yZy9ucy9jcmVkZW50aWFscy92MiIsImh0dHBzOi8vcHVybC5pbXNnbG9iYWwub3JnL3NwZWMvb2IvdjNwMC9jb250ZXh0LTMuMC4zLmpzb24iXSwiaWQiOiJ1cm46dXVpZDphNjNhNjBiZS1mNGFmLTQ5MWMtODdmYy0yYzhmZDMwMDdhNTgiLCJ0eXBlIjpbIlZlcmlmaWFibGVDcmVkZW50aWFsIiwiT3BlbkJhZGdlQ3JlZGVudGlhbCJdLCJpc3N1ZXIiOnsiaWQiOiJkaWQ6a2V5Ono2TWtxSlIyNlFwcENUR1A2clZtVXRpRkNmYlAyd1NUOXhZSEMyNkhRQ2hBNWJqTSIsInR5cGUiOlsiUHJvZmlsZSJdLCJuYW1lIjoiRXhhbXBsZSBVbml2ZXJzaXR5IiwidXJsIjoiaHR0cHM6Ly91bml2ZXJzaXR5LmV4YW1wbGUifSwidmFsaWRGcm9tIjoiMjAyNi0wMS0xNVQxMDowMDowMFoiLCJ2YWxpZFVudGlsIjoiMjAzMS0wMS0wMVQwMDowMDowMFoiLCJuYW1lIjoiT3BlbiBCYWRnZXMgUHJhY3RpdGlvbmVyIiwiY3JlZGVudGlhbFN1YmplY3QiOnsidHlwZSI6WyJBY2hpZXZlbWVudFN1YmplY3QiXSwiaWRlbnRpZmllciI6W3sidHlwZSI6IklkZW50aXR5T2JqZWN0IiwiaWRlbnRpdHlUeXBlIjoiZW1haWxBZGRyZXNzIiwiaGFzaGVkIjp0cnVlLCJpZGVudGl0eUhhc2giOiJzaGEyNTYkYzdlZjg2NDA1YmE3MWI4NWFjZDhlMmU5NTE2NmM0YjExMTQ0ODA4OWYyZTE1OTlmNDJmZTFiYmE0NmU4NjVjNSIsInNhbHQiOiJkZWFkc2VhIn1dLCJhY2hpZXZlbWVudCI6eyJpZCI6Imh0dHBzOi8vdW5pdmVyc2l0eS5leGFtcGxlL2FjaGlldmVtZW50cy9wcmFjdGl0aW9uZXIiLCJ0eXBlIjpbIkFjaGlldmVtZW50Il0sIm5hbWUiOiJPcGVuIEJhZGdlcyBQcmFjdGl0aW9uZXIiLCJkZXNjcmlwdGlvbiI6IkRlbW9uc3RyYXRlZCB0aGUgYWJpbGl0eSB0byBpc3N1ZSBhbmQgdmVyaWZ5IE9wZW4gQmFkZ2VzIDMuMCBjcmVkZW50aWFscy4iLCJjcml0ZXJpYSI6eyJuYXJyYXRpdmUiOiJJc3N1ZSB0aHJlZSBiYWRnZXMgYW5kIHZlcmlmeSB0aGVtIHdpdGggYW4gaW5kZXBlbmRlbnQgdmVyaWZpZXIuIn19fSwicHJvb2YiOnsidHlwZSI6IkRhdGFJbnRlZ3JpdHlQcm9vZiIsImNyeXB0b3N1aXRlIjoiZWRkc2EtcmRmYy0yMDIyIiwiY3JlYXRlZCI6IjIwMjYtMDEtMTVUMTA6MDA6MDBaIiwidmVyaWZpY2F0aW9uTWV0aG9kIjoiZGlkOmtleTp6Nk1rcUpSMjZRcHBDVEdQNnJWbVV0aUZDZmJQMndTVDl4WUhDMjZIUUNoQTViak0jejZNa3FKUjI2UXBwQ1RHUDZyVm1VdGlGQ2ZiUDJ3U1Q5eFlIQzI2SFFDaEE1YmpNIiwicHJvb2ZQdXJwb3NlIjoiYXNzZXJ0aW9uTWV0aG9kIiwicHJvb2ZWYWx1ZSI6Ino0TUM4WXZaNzZnQlRub2JuVTdWOGo2VG4zanQyTFhNNVFnV3JnVnV0UW5hYjNXNGo4WnFqcjdGNzJjV3FTZDFHeEZjNXp3TkM2Ym9QVHdEMjJnY3ZHU1NNIn19uAk5JgAAA3pJREFUeJztlcFtHEEMBJWHP87FD2fh2JypDRg4QIBX0u4MOd0kqwF+V2RX3ejtjRBC2ubbr+9/dka9P7mZXdCIUTCnoSODOGrQCCGKGigiCKKGhwyiqEEhgihqMIggjBoGEoiiBuAyag7Hc7rgH79/Lg0iJMQVtosUaj6pqQhcIYSaU3i6QT8lg5pbSCaAzxRBzW8r08BniaDmuJTJ4DNEUPN8FMDniKDmeivAHywB4M+IoOZ8GeAPlgDwGhHU3P8F+IMlAP5wCYDvIQHwm429BMAfLAHwh0sAfG8JgN9wbCRAgMECAH+wBMD3GJkECOAxEgGA7zXHJQC+3xwTgF+/5xx7BYDvO+MFUO7gen+oAM7w7xRQ/e/JJaguQNRuHTp4LIA7/KfHr+yZ/X1rCbod/nTXzG+3EkB19CqkOztnfdehCwT4Yu+Mbzp10eb534V1tXv091y7aPHrjwD2/obIb7n3gQAIUP/5j4IWOZX6QAAEqP38u0mg7uFpHwiAAD0EcJBAfT8CIECMAFWPVkqgvnunhxa/fgRY76KVAAoJ1PcigFAC9Z0IIIDerY/yAqjBV++lrABq0F36KSmAGm6njsoJoIZaRYKWAqhhVpKgnQBqiNUkaCWAGl5FCdoIoIZWVYIWAqhhVZYAAYzHqbtlAbIPUUOqLMGTPf4TwOUVUAOaIMAlfARAAAsBuorg1FkJASJEiBApYge3rrYFOH3Y3SMzXpKIHdS9tBIgs5gpd34ogOu/AQSIu/NT+AjQ/84wAaqUM0GAsOe/4yuAAA/hdxNgRwL13vYCVCmpswDhzz8C9L3ttgBI0O+mR/ARoN9NjwWYLIF6Twv4COA9dgJ0KU69XzT8LQE6vgKfFajeK0OALfjTXgH1XtHwQwSYIoF6H1v4XQV4X6h6D3sBOktQZaTwkQD4CIAASDAe/ooASHAO/hEBkGA4fCQAPhIAf10AJIiFLxUACYbDfwUJBsN/ZfWIySLsdKbmfRkkGAz/lZ3DJoiw24+a760gwWD4r+we20mEiC7UPJcScXhlEaLuV3PcSlQJlUSIvFnNLySRhTiLEH2nmlt4ogtykCHjJjWn1GQUdlKI7P3VfI4ku8QoKU7vqeZyPKcLdh01B3nUAABvEDUM4JtEDQbwJlGDArxR1PCAbhI1UMCbRQ0a4EYBOrkMoAkh5KP8Bdscqr2zvHE1AAAAAElFTkSuQmCC" alt="Data URL badge" width="128" height="128" />
+        <figcaption>data: URL (OB 3.0)<br /><small>Expected: verified</small></figcaption>
+      </figure>
+      <figure>
+        <img src="http://localhost:8766/png/ob3-vcjwt.png" alt="Cross-origin badge" width="128" height="128" />
+        <figcaption>Cross-origin image (OB 3.0 VC-JWT)<br /><small>Expected: verified</small></figcaption>
+      </figure>
+    </div>
+    <div class="spacer"></div>
+    <h2>Lazy-loaded image</h2>
+    <div class="grid">
+      <figure>
+        <img src="../png/ob3-expired.png" loading="lazy" alt="Lazy expired badge" width="128" height="128" />
+        <figcaption>Lazy-loaded (OB 3.0, expired)<br /><small>Expected: expired</small></figcaption>
+      </figure>
+    </div>
+  </body>
+</html>

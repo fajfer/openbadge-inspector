@@ -14,6 +14,7 @@ import {
   OB2_ASSERTION_URL,
   signDataIntegrity,
 } from "./credentials.ts";
+import { galleryHtml } from "./gallery.ts";
 import { itxtChunk, medalPng, medalSvg, type Palette, textChunk } from "./images.ts";
 import { loadTestKeys } from "./keys.ts";
 
@@ -132,5 +133,7 @@ function didWebDocument(publicKey: JsonWebKey): JsonObject {
     assertionMethod: [didWebMethod],
   };
 }
+
+await write("pages/gallery.html", galleryHtml());
 
 process.stdout.write(`Fixtures written to ${ROOT}\n`);

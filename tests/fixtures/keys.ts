@@ -37,9 +37,8 @@ function publicJwk(jwk: JsonWebKey): JsonWebKey {
 }
 
 export async function loadTestKeys(): Promise<TestKeys> {
-  const edJwk = await loadOrCreate(
-    "ed25519",
-    () => crypto.subtle.generateKey({ name: "Ed25519" }, true, ["sign", "verify"]),
+  const edJwk = await loadOrCreate("ed25519", () =>
+    crypto.subtle.generateKey({ name: "Ed25519" }, true, ["sign", "verify"]),
   );
   const rsaJwk = await loadOrCreate("rsa", () =>
     crypto.subtle.generateKey(

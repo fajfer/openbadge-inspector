@@ -1,5 +1,7 @@
 {
-  "@context": ["https://www.w3.org/ns/did/v1"],
+  "@context": [
+    "https://www.w3.org/ns/did/v1"
+  ],
   "id": "did:web:university.example",
   "verificationMethod": [
     {
@@ -13,5 +15,7 @@
       }
     }
   ],
-  "assertionMethod": ["did:web:university.example#key-1"]
+  "assertionMethod": [
+    "did:web:university.example#key-1"
+  ]
 }

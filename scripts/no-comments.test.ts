@@ -5,7 +5,9 @@
 import { describe, expect, it } from "vitest";
 import { findBlockComments, findScriptComments } from "./no-comments.ts";
 
-const HEADER = "// SPDX-FileCopyrightText: 2026 Someone\n//\n// SPDX-License-Identifier: EUPL-1.2\n\n";
+const COPYRIGHT_TAG = ["SPDX", "FileCopyrightText"].join("-");
+const LICENSE_TAG = ["SPDX", "License", "Identifier"].join("-");
+const HEADER = `// ${COPYRIGHT_TAG}: 2026 Someone\n//\n// ${LICENSE_TAG}: EUPL-1.2\n\n`;
 
 describe("findScriptComments", () => {
   it("allows the SPDX header", () => {
@@ -35,10 +37,8 @@ describe("findScriptComments", () => {
 
 describe("findBlockComments", () => {
   it("allows a leading SPDX block in CSS and HTML", () => {
-    expect(findBlockComments("/*\n * SPDX-License-Identifier: EUPL-1.2\n */\na{}", "/*", "*/")).toEqual([]);
-    expect(
-      findBlockComments("<!doctype html>\n<!--\nSPDX-License-Identifier: EUPL-1.2\n-->\n<p>", "<!--", "-->"),
-    ).toEqual([]);
+    expect(findBlockComments(`/*\n * ${LICENSE_TAG}: EUPL-1.2\n */\na{}`, "/*", "*/")).toEqual([]);
+    expect(findBlockComments(`<!doctype html>\n<!--\n${LICENSE_TAG}: EUPL-1.2\n-->\n<p>`, "<!--", "-->")).toEqual([]);
   });
 
   it("reports any other comment", () => {
