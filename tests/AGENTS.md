@@ -19,6 +19,8 @@ as `*.test.ts`; this folder holds what is shared, plus the E2E suite.
 - `fixtures/png/`, `fixtures/svg/`: `ob2-hosted`, `ob2-embedded`, `ob2-signed`, `ob3-jsonld-didkey`,
   `ob3-vcjwt-didkey`, `ob3-expired`, `ob3-tampered`, `plain` (not baked), `stripped` (re-encoded copy),
   `corrupt-crc`, `oversized`, `malformed-json`, `ob1-text` (must read as not baked).
+- `fixtures/1edtech/`: OB 3.0 sample credentials from the 1EdTech conformance suite, unchanged, with their
+  upstream licence recorded in `REUSE.toml` and the source commit in `fixtures/1edtech/SOURCE.md`.
 - `fixtures/pages/`: HTML pages for E2E (img, picture/srcset, lazy, inline svg, object/embed, cross-origin).
 - `e2e/`: `selenium-webdriver` + geckodriver; `setup.ts` builds, installs the temporary add-on and serves pages
   on two local origins.

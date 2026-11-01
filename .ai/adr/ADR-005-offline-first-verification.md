@@ -7,12 +7,12 @@ SPDX-License-Identifier: EUPL-1.2
 
 - **Status:** Accepted
 - **Date:** 2026-11-01
-- **Evidence:** [PROMPT.md](../../PROMPT.md)
+- **Evidence:** maintainer decision during the project questionnaire, 2026-11-01
 - **Supersedes:** none
 
 ## Context
 
-PROMPT.md Q1.3, Q3.1, Q3.4. Online verification tells issuers which pages the user views. The owner chose: configurable, offline by default, network only on a per-badge click.
+Online verification tells issuers which pages the user views. The maintainer chose: configurable, offline by default, network only on a per-badge click, no recipient matching.
 
 ## Decision
 

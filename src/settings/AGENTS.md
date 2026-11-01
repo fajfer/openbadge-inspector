@@ -21,6 +21,7 @@ The options page and the typed settings store.
 
 ## Contracts
 
+- `autoScan` is one global switch, not per site.
 - Unknown or invalid stored values fall back to defaults (parse, don't trust storage).
 - Adding a setting: schema + default + options control + message keys + test.
 

@@ -18,7 +18,7 @@ importing each other ([ADR-009](../../.ai/adr/ADR-009-plugin-registry.md)).
   `RawPayload` (`{ encoding: 'url' | 'json' | 'jws' | 'jwt', value, container: 'png-itxt' | 'svg' }`),
   `ExtractResult` (`baked` with payloads / `not-baked` / `error` with reason), `BadgeSummary`,
   `VerificationCheck` (`{ id, status: 'pass' | 'fail' | 'not-run', reasonKey, details? }`), `BadgeStatus`
-  (`verified` | `unverified` | `invalid` | `not-baked`).
+  (`verified` | `unverified` | `expired` | `invalid` | `not-baked`).
 - `registry.ts`: `createRegistry()`, `registerExtractor`, `registerFormat`, `registerVerifier`.
 - `inspect.ts`: `inspect(source, context)` → `InspectionResult`; `deriveStatus(checks)` maps checks to a
   `BadgeStatus`.
@@ -30,7 +30,7 @@ importing each other ([ADR-009](../../.ai/adr/ADR-009-plugin-registry.md)).
 - `Extractor`: `{ id, accepts(source): boolean, extract(source): ExtractResult }`. Pure, synchronous on bytes.
 - `FormatParser`: `{ id: 'ob2' | 'ob3', accepts(payload): boolean, parse(payload): ParseResult }`.
 - `Verifier`: `{ id, appliesTo(summary, mode): boolean, verify(summary, context): Promise<VerificationCheck[]> }`.
-- Status derivation: any `fail` → `invalid`; all required checks `pass` including a signature or hosted check →
+- Status derivation: any `fail` other than `not-expired` → `invalid`; only `not-expired` fails → `expired`; all required checks `pass` including a signature or hosted check →
   `verified`; otherwise `unverified`.
 - `fetchJson`/`fetchBytes` exist in the context only in `online` mode, so offline verifiers can't make requests.
 

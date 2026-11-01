@@ -7,12 +7,12 @@ SPDX-License-Identifier: EUPL-1.2
 
 - **Status:** Accepted
 - **Date:** 2026-11-01
-- **Evidence:** [PROMPT.md](../../PROMPT.md)
+- **Evidence:** maintainer decision during the project questionnaire, 2026-11-01
 - **Supersedes:** none
 
 ## Context
 
-PROMPT.md Q1.2, Q2.4, Q3.3. The baking spec defines PNG `iTXt` chunks and SVG elements with the keyword/namespace `openbadges`. OB 1.x is rare. Many sites show plain images that link to badge platforms, but detecting those relies on heuristics, not metadata.
+The baking spec defines PNG `iTXt` chunks and SVG elements with the keyword/namespace `openbadges`. OB 1.x is rare and out of scope. Many sites show plain images that link to badge platforms, but detecting those relies on heuristics, not metadata, so the maintainer chose baked-only for v1.
 
 ## Decision
 

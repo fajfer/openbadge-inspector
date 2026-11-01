@@ -7,12 +7,12 @@ SPDX-License-Identifier: EUPL-1.2
 
 - **Status:** Accepted
 - **Date:** 2026-11-01
-- **Evidence:** [PROMPT.md](../../PROMPT.md)
+- **Evidence:** maintainer decision during the project questionnaire, 2026-11-01
 - **Supersedes:** none
 
 ## Context
 
-PROMPT.md Q1.4. Scanning every page costs bandwidth and CPU and needs broad host access up front. Most pages have no badges.
+Scanning every page costs bandwidth and CPU and needs broad host access up front. Most pages have no badges.
 
 ## Decision
 
@@ -20,7 +20,7 @@ Nothing is scanned until the user clicks the toolbar button (scan the whole page
 
 ## Consequences
 
-The default install needs only `activeTab`, `menus`, `scripting` and `storage`. Auto mode needs the optional host permission and a MutationObserver path, both covered by tests. Whether auto mode becomes per site is an open question in the v1 spec.
+The default install needs only `activeTab`, `menus`, `scripting` and `storage`. Auto mode needs the optional host permission and a MutationObserver path, both covered by tests. Auto-scan is one global switch, not per site (maintainer, 2026-11-01).
 
 ## Related files
 

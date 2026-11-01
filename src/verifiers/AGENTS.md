@@ -25,6 +25,7 @@ user clicks *Verify online* with the setting enabled ([ADR-005](../../.ai/adr/AD
 - `online/ob3-key-resolution.ts`: `did:web` and HTTPS verification methods.
 - `online/ob3-status.ts`: `credentialStatus` (`1EdTechRevocationList`, `BitstringStatusListEntry`).
 - `crypto/`: thin wrappers over `crypto.subtle`; nothing hand-rolled.
+- `contexts/`: bundled JSON-LD contexts with their licence annotations, and the offline document loader.
 
 ## Contracts
 
@@ -36,10 +37,11 @@ user clicks *Verify online* with the setting enabled ([ADR-005](../../.ai/adr/AD
 
 ## Gotchas
 
-- `crypto.subtle` Ed25519 support exists in Firefox 129+; ESR 128 needs a check for availability and a `not-run`
-  fallback, or a small vetted library (needs approval: runtime dependency).
-- RDF canonicalisation for `eddsa-rdfc-2022` needs a JSON-LD processor with bundled contexts (no remote context
-  loading). This is an open question in the v1 spec.
+- Ed25519 uses native `crypto.subtle` (Firefox 129+; the minimum is ESR 140, see
+  [ADR-007](../../.ai/adr/ADR-007-mv3-desktop-esr.md)). No JS crypto library.
+- `eddsa-rdfc-2022` uses the bundled `jsonld` + `rdf-canonize` with a document loader limited to
+  `contexts/` ([ADR-014](../../.ai/adr/ADR-014-bundled-jsonld-canonicalisation.md)). Any other context URL
+  → `not-run`, never a fetch.
 
 ## Validate
 

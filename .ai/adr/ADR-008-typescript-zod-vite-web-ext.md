@@ -7,12 +7,12 @@ SPDX-License-Identifier: EUPL-1.2
 
 - **Status:** Accepted
 - **Date:** 2026-11-01
-- **Evidence:** [PROMPT.md](../../PROMPT.md)
+- **Evidence:** maintainer decision during the project questionnaire, 2026-11-01
 - **Supersedes:** none
 
 ## Context
 
-PROMPT.md Q4.1. The openmercato guidance uses TypeScript and Zod as guardrails for generated code. The UI is one card and a few icons, so a framework isn't worth its size or AMO review cost.
+The openmercato AI-engineering guidance uses TypeScript and Zod as guardrails for generated code. The UI is one card and a few icons, so a framework isn't worth its size or AMO review cost.
 
 ## Decision
 
@@ -26,4 +26,4 @@ AMO reviewers need reproducible builds: the build must be deterministic and docu
 
 - `package.json`
 - `tsconfig.json`
-- `vite.config.ts`
+- `scripts/build.ts`

@@ -25,6 +25,7 @@ The card shown next to an image after *Inspect Open Badge* or a click on a statu
 - Fields: name, description, issuer (name + `https:` link), issued, expires, spec version, recipient type/hashed,
   checks list (pass / fail / not run, each with its reason).
 - Not baked → only the message `notBaked` (text fixed by ADR-006).
+- Expired → orange, with "Expired on <date>" above the checks list.
 - *Verify online* button: shown only when `onlineVerification` is on and at least one online verifier applies.
 - Accessible: `role="dialog"`, labelled by the badge name, focus moved in and restored on close; icons have
   `aria-label`s.
