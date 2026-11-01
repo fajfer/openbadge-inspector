@@ -1,0 +1,122 @@
+# SPDX-FileCopyrightText: 2026 Damian Fajfer <damian@fajfer.org>
+#
+# SPDX-License-Identifier: EUPL-1.2
+
+name: Release
+
+on:
+  push:
+    tags: ["v*.*.*"]
+
+permissions: {}
+
+jobs:
+  build:
+    name: Build release files
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      hashes: ${{ steps.hash.outputs.hashes }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          package-manager-cache: false
+
+      - name: Check the tag matches the extension version
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          for file in package.json manifest.json; do
+            if [[ "$(jq -r .version "$file")" != "$version" ]]; then
+              echo "::error::tag $GITHUB_REF_NAME doesn't match the version in $file"
+              exit 1
+            fi
+          done
+
+      - name: Build the extension
+        run: |
+          npm ci
+          npm run build
+          npm run ext:lint
+          npx web-ext build -s dist -a artifacts --filename "openbadge-inspector-${GITHUB_REF_NAME#v}.zip"
+
+      - name: Package the source for AMO review
+        run: git archive --format=zip -o "artifacts/openbadge-inspector-${GITHUB_REF_NAME#v}-source.zip" "$GITHUB_SHA"
+
+      - name: Install syft
+        id: syft
+        uses: anchore/sbom-action/download-syft@66cbf4bc1f1c0d2edc94016e65bc221b6bb0ad6c # v0.24.3
+
+      - name: Generate SBOMs
+        env:
+          SYFT: ${{ steps.syft.outputs.cmd }}
+          SYFT_FILE_METADATA_SELECTION: none
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          "$SYFT" scan dir:. --exclude './artifacts/**' --exclude './dist/**' --quiet \
+            -o "cyclonedx-json@1.6=artifacts/openbadge-inspector-$version.cdx.json" \
+            -o "spdx-json@2.3=artifacts/openbadge-inspector-$version.spdx.json"
+          jq -e '.specVersion == "1.6"' "artifacts/openbadge-inspector-$version.cdx.json" > /dev/null
+          jq -e '.spdxVersion == "SPDX-2.3"' "artifacts/openbadge-inspector-$version.spdx.json" > /dev/null
+
+      - name: Hash release files
+        id: hash
+        run: |
+          cd artifacts
+          echo "hashes=$(sha256sum -- * | base64 -w0)" >> "$GITHUB_OUTPUT"
+          sha256sum -- * > SHA256SUMS
+
+      - name: Upload release files
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: artifacts
+          path: artifacts/
+          if-no-files-found: error
+
+  provenance:
+    name: SLSA provenance
+    needs: build
+    permissions:
+      actions: read
+      id-token: write
+      contents: write
+    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@v2.1.0 # zizmor: ignore[unpinned-uses]
+    with:
+      base64-subjects: ${{ needs.build.outputs.hashes }}
+      provenance-name: openbadge-inspector.intoto.jsonl
+
+  release:
+    name: Create GitHub Release
+    needs: [build, provenance]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download release files
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: artifacts
+          path: artifacts
+
+      - name: Download provenance
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: ${{ needs.provenance.outputs.provenance-name }}
+          path: artifacts
+
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          prerelease=()
+          [[ "$GITHUB_REF_NAME" == *-* ]] && prerelease=(--prerelease)
+          gh release create "$GITHUB_REF_NAME" artifacts/* --verify-tag --title "$GITHUB_REF_NAME" \
+            --generate-notes "${prerelease[@]}"

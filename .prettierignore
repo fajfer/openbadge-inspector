@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: 2026 Damian Fajfer <damian@fajfer.org>
+#
+# SPDX-License-Identifier: EUPL-1.2
+
+/dist/
+/web-ext-artifacts/
+/LICENSES/
+/LICENSE
+package-lock.json
+*.md
+/tests/fixtures/online/
+/tests/fixtures/pages/
+/tests/fixtures/keys/
+/tests/fixtures/w3c/
+/src/verifiers/contexts/*.json

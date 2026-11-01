@@ -7,12 +7,12 @@ SPDX-License-Identifier: EUPL-1.2
 
 - **Status:** Accepted
 - **Date:** 2026-11-01
-- **Evidence:** [PROMPT.md](../../PROMPT.md)
+- **Evidence:** maintainer decision during the project questionnaire, 2026-11-01
 - **Supersedes:** none
 
 ## Context
 
-PROMPT.md Q4.4: English only for v1. Adding a language later shouldn't require code changes.
+The maintainer chose English only for v1. Adding a language later shouldn't require code changes.
 
 ## Decision
 

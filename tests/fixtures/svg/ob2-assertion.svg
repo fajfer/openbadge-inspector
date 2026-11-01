@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:openbadges="http://openbadges.org" width="128" height="128" viewBox="0 0 128 128">
+  <openbadges:assertion verify="https://issuer.example/assertions/1001.json"><![CDATA[{"@context":"https://w3id.org/openbadges/v2","type":"Assertion","id":"https://issuer.example/assertions/1001.json","recipient":{"type":"email","hashed":true,"salt":"deadsea","identity":"sha256$c7ef86405ba71b85acd8e2e95166c4b111448089f2e1599f42fe1bba46e865c5"},"badge":{"@context":"https://w3id.org/openbadges/v2","type":"BadgeClass","id":"https://issuer.example/badges/web-literacy.json","name":"Web Literacy","description":"Awarded for completing the Web Literacy course.","image":"https://issuer.example/badges/web-literacy.png","criteria":{"narrative":"Complete all six modules."},"issuer":{"@context":"https://w3id.org/openbadges/v2","type":"Issuer","id":"https://issuer.example/issuer.json","name":"Example Learning Lab","url":"https://issuer.example","email":"badges@issuer.example","revocationList":"https://issuer.example/revocations.json"}},"verification":{"type":"HostedBadge"},"issuedOn":"2026-01-15T10:00:00Z"}]]></openbadges:assertion>
+  <circle cx="64" cy="64" r="62" fill="rgb(13,71,161)"/>
+  <circle cx="64" cy="64" r="52" fill="rgb(66,133,244)"/>
+  <text x="64" y="72" font-family="sans-serif" font-size="20" text-anchor="middle" fill="white">OB 2.0</text>
+  
+</svg>

@@ -7,12 +7,12 @@ SPDX-License-Identifier: EUPL-1.2
 
 - **Status:** Accepted
 - **Date:** 2026-11-01
-- **Evidence:** [PROMPT.md](../../PROMPT.md)
+- **Evidence:** maintainer decision during the project questionnaire, 2026-11-01
 - **Supersedes:** none
 
 ## Context
 
-PROMPT.md Q4.3. The openmercato guidance asks for E2E tests in Playwright, but Playwright can't load extensions in Firefox.
+The openmercato AI-engineering guidance asks for E2E tests in Playwright, but Playwright can't load extensions in Firefox.
 
 ## Decision
 

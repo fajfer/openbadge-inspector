@@ -8,15 +8,16 @@ SPDX-License-Identifier: EUPL-1.2
 OpenBadge Inspector is a Firefox extension. It finds Open Badges 2.0/3.0 baked into PNG and SVG images on a page,
 shows what they are, and checks whether they are valid. This file holds the rules for every task, plus a router to
 the one or two scoped files a task needs. Read this file, then only what the **Task Router** points to. Module
-detail lives next to the code. Decisions live in [.ai/adr](.ai/adr/README.md). The original Q&A behind the design is
-[PROMPT.md](PROMPT.md); read it only when an ADR doesn't answer a "why".
+detail lives next to the code. Decisions live in [.ai/adr](.ai/adr/README.md).
 
 ## Always
 
+<!-- REUSE-IgnoreStart -->
 - Put an SPDX header on every new file (`SPDX-FileCopyrightText: <years> Damian Fajfer <damian@fajfer.org>` +
   `SPDX-License-Identifier: EUPL-1.2`), in the comment style of that file type. Files that cannot hold a comment
   (JSON, images, fixtures) get a `<file>.license` sidecar or an entry in `REUSE.toml`
   ([ADR-001](.ai/adr/ADR-001-eupl-and-spdx-headers.md)).
+<!-- REUSE-IgnoreEnd -->
 - Update the SPDX year range when it is stale, e.g. `2026` becomes `2026-2027` in 2027.
 - Strict TypeScript; no `any`, no non-null `!` assertions on untrusted data. Data that crosses a boundary (baked
   payloads, network responses, messages between extension contexts, storage) is parsed with a Zod schema first.
@@ -68,10 +69,11 @@ detail lives next to the code. Decisions live in [.ai/adr](.ai/adr/README.md). T
 | Unit tests (all) | `npm test` |
 | Unit tests (one module) | see the **Validate** section of the scoped file |
 | E2E (real Firefox) | `npm run test:e2e` |
-| Extension lint | `npm run build && npx web-ext lint -s dist` |
+| Extension lint | `npm run build && npm run ext:lint` |
 | Licensing | `reuse lint` |
 
-These scripts are created by the first task of the [v1 spec](.ai/specs/2026-11-01-v1-mvp.md).
+Try the extension on the test gallery with `npm run demo`. Build entry points and static files are listed in
+`scripts/build.ts` (run with Node 24's built-in TypeScript support).
 
 ## Task Router
 
@@ -81,15 +83,16 @@ Shorthand: `<area>` means `<area>/AGENTS.md`. Read root + the listed files, noth
 |---|---|
 | Read baked data out of a PNG or SVG file | [extractors](src/extractors/AGENTS.md), [ADR-003](.ai/adr/ADR-003-baked-only-detection.md), [ADR-010](.ai/adr/ADR-010-untrusted-input.md) |
 | OB 2.0 / OB 3.0 schema, parsing, `BadgeSummary` | [formats](src/formats/AGENTS.md) |
-| Signature, expiry, revocation, hosted check | [verifiers](src/verifiers/AGENTS.md), [ADR-005](.ai/adr/ADR-005-offline-first-verification.md) |
+| Signature, expiry, revocation, hosted check | [verifiers](src/verifiers/AGENTS.md), [ADR-005](.ai/adr/ADR-005-offline-first-verification.md), [ADR-014](.ai/adr/ADR-014-bundled-jsonld-canonicalisation.md) |
 | Add a new extractor, format or verifier | [registry](src/registry/AGENTS.md), [ADR-009](.ai/adr/ADR-009-plugin-registry.md) + the module's file |
 | Find images on a page, status icons, lazy images | [content](src/content/AGENTS.md), [ADR-004](.ai/adr/ADR-004-on-demand-scanning.md) |
 | Info card look, text or fields | [ui](src/ui/AGENTS.md), [ADR-006](.ai/adr/ADR-006-overlay-card-and-status-icons.md) |
 | Right-click menu, toolbar button, permissions, fetching image bytes | [background](src/background/AGENTS.md), [ADR-007](.ai/adr/ADR-007-mv3-desktop-esr.md) |
 | Options page, stored settings | [settings](src/settings/AGENTS.md) |
-| Messages between background and content script | [background](src/background/AGENTS.md), [content](src/content/AGENTS.md) |
+| Messages between background and content script | [background](src/background/AGENTS.md), [content](src/content/AGENTS.md), `src/messaging/messages.ts` |
 | Test fixtures, unit or E2E tests | [tests](tests/AGENTS.md), [ADR-011](.ai/adr/ADR-011-vitest-and-selenium.md) |
-| Build, manifest, CI, AMO submission | [ADR-008](.ai/adr/ADR-008-typescript-zod-vite-web-ext.md), [ADR-013](.ai/adr/ADR-013-amo-public-listing.md) |
+| Build, manifest, CI, AMO submission | [ADR-008](.ai/adr/ADR-008-typescript-zod-vite-web-ext.md), [ADR-013](.ai/adr/ADR-013-amo-public-listing.md), [ADR-015](.ai/adr/ADR-015-no-eval-in-bundle.md) |
+| Release, provenance, SBOMs | [ADR-016](.ai/adr/ADR-016-slsa-build-l3-releases.md), `.github/workflows/release.yml` |
 | Record a decision | [.ai/adr](.ai/adr/README.md) |
 | Plan a 3+ step task | [.ai/specs](.ai/specs/README.md) |
 
@@ -100,7 +103,7 @@ Shorthand: `<area>` means `<area>/AGENTS.md`. Read root + the listed files, noth
   values substituted by the agent's own.
 - TypeScript style: Prettier (print width 120), ESLint with `typescript-eslint` strict. camelCase functions and
   variables, PascalCase types and classes, UPPER_SNAKE_CASE constants, kebab-case file names.
-- ES modules only; `browser.*` from `webextension-polyfill` types, never `chrome.*`.
+- ES modules only; the global `browser.*` (typed by `@types/firefox-webext-browser`), never `chrome.*`.
 - Divide code into files: keep Zod schemas and types (`*.schema.ts`, `types.ts`) separate from the logic that uses
   them, and don't put everything in one file.
 - Results, not exceptions, across module boundaries: extractors return `ExtractResult`, verifiers return

@@ -3,32 +3,28 @@ SPDX-FileCopyrightText: 2026 Damian Fajfer <damian@fajfer.org>
 
 SPDX-License-Identifier: EUPL-1.2
 -->
-# ui: info card
-
-> Status: planned. Nothing here is implemented yet; the [v1 spec](../../.ai/specs/2026-11-01-v1-mvp.md) builds it. Update this file when the code differs.
+# ui: markers, info card, toast
 
 ## Purpose
 
-The card shown next to an image after *Inspect Open Badge* or a click on a status icon
-([ADR-006](../../.ai/adr/ADR-006-overlay-card-and-status-icons.md)).
+Everything the user sees on a page ([ADR-006](../../.ai/adr/ADR-006-overlay-card-and-status-icons.md)).
 
 ## Files
 
-- `card.ts`: builds the card DOM from an `InspectionResult` with `document.createElement` + `textContent`.
-- `card.css`: styles, imported as a string and adopted into the shadow root; respects `prefers-color-scheme`.
-- `position.ts`: anchors to the image, flips when it would leave the viewport, closes on Escape, outside click or
-  scroll away.
-- `status.ts`: `BadgeStatus` → icon shape, colour token and message key.
+- `overlay.ts`: one host element with a closed shadow root; markers positioned in document coordinates and
+  repositioned on scroll/resize; card open/close (Escape, outside click, focus restore); toast.
+- `card.ts`: builds the card from an `InspectionResult` with `createElement` + `textContent` only.
+- `status.ts`: status → symbol, tone and message key; check and reason message keys.
+- `position.ts`: marker and card placement (right of the image, else left, else centred; clamped to the viewport).
+- `dom.ts`: `element()`, `truncate()`, `safeHttpsUrl()`. `overlay.css`: styles, light and dark.
 
 ## Contracts
 
-- Fields: name, description, issuer (name + `https:` link), issued, expires, spec version, recipient type/hashed,
-  checks list (pass / fail / not run, each with its reason).
-- Not baked → only the message `notBaked` (text fixed by ADR-006).
-- *Verify online* button: shown only when `onlineVerification` is on and at least one online verifier applies.
-- Accessible: `role="dialog"`, labelled by the badge name, focus moved in and restored on close; icons have
-  `aria-label`s.
+- Not baked → only `notBakedExplanation` (wording fixed by ADR-006). Expired → orange with "Expired on <date>".
+- Links only for `https:` URLs, with `rel="noopener noreferrer"`.
+- Typography is set on `.layer`/`.toast`, not `:host`: the host's inline `all: initial` beats `:host`.
 
 ## Validate
 
-`npx vitest run src/ui` and `npm run test:e2e`.
+`npx vitest run --project dom src/ui`; check the look with `npm run demo` or the E2E screenshots
+(`E2E_SCREENSHOTS=<dir> npm run test:e2e`).

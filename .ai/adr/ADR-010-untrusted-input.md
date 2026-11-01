@@ -7,12 +7,12 @@ SPDX-License-Identifier: EUPL-1.2
 
 - **Status:** Accepted
 - **Date:** 2026-11-01
-- **Evidence:** [PROMPT.md](../../PROMPT.md)
+- **Evidence:** maintainer decision during the project questionnaire, 2026-11-01
 - **Supersedes:** none
 
 ## Context
 
-Analysis in PROMPT.md §2.3. Anyone can bake any data into an image; the extension runs on every page.
+Anyone can bake any data into an image; the extension runs on every page.
 
 ## Decision
 

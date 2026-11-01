@@ -21,4 +21,11 @@ If a lesson becomes a lasting rule, move it into the narrowest `AGENTS.md` it ap
 
 ## Entries
 
-None yet.
+### 2026-11-02: e2e, permissions
+
+- **Mistake:** the E2E suite granted `<all_urls>` before scanning, so the default flow (toolbar click with only
+  temporary tab access) was never tested. The demo showed "Couldn't read this image" on every image while all
+  tests passed.
+- **Rule:** run every user-facing flow at least once in a fresh profile with no optional permissions, triggered
+  the way a user triggers it. Before saying a feature works, check it under the default install, not only the
+  configured one.

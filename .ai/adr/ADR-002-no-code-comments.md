@@ -7,12 +7,12 @@ SPDX-License-Identifier: EUPL-1.2
 
 - **Status:** Accepted
 - **Date:** 2026-11-01
-- **Evidence:** [PROMPT.md](../../PROMPT.md)
+- **Evidence:** maintainer decision during the project questionnaire, 2026-11-01
 - **Supersedes:** none
 
 ## Context
 
-PROMPT.md Q4.4: the owner asked that `AGENTS.md` forbid comments in code. Comments drift from the code; names, types and small functions should carry the meaning instead.
+The maintainer asked that `AGENTS.md` forbid comments in code. Comments drift from the code; names, types and small functions should carry the meaning instead.
 
 ## Decision
 

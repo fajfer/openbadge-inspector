@@ -1,0 +1,52 @@
+/*
+ * SPDX-FileCopyrightText: 2026 Damian Fajfer <damian@fajfer.org>
+ *
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+:root {
+  color-scheme: light dark;
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+body {
+  margin: 0;
+  padding: 16px 20px;
+  max-width: 640px;
+}
+
+.option {
+  padding: 10px 0;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 15%, transparent);
+}
+
+.control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.control label {
+  font-weight: 600;
+}
+
+.help {
+  margin: 4px 0 0 26px;
+  opacity: 0.75;
+}
+
+.error {
+  margin: 6px 0 0 26px;
+  color: #cf222e;
+}
+
+.privacy {
+  margin-top: 16px;
+  opacity: 0.75;
+}

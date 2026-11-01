@@ -1,0 +1,7 @@
+The Open Badges 3.0 JSON-LD context documents in src/verifiers/contexts/ob-v3p0-*.json
+were published by 1EdTech Consortium, Inc. at https://purl.imsglobal.org/spec/ob/v3p0/
+for use by Open Badges 3.0 implementations.
+
+No licence is stated at the source. The files are redistributed unchanged so that the
+extension can verify Open Badges 3.0 credentials without loading remote contexts.
+Copyright remains with 1EdTech Consortium, Inc.

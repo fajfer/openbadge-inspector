@@ -1,0 +1,329 @@
+/*
+ * SPDX-FileCopyrightText: 2026 Damian Fajfer <damian@fajfer.org>
+ *
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+:host {
+  all: initial;
+  --obi-surface: #ffffff;
+  --obi-text: #1f2328;
+  --obi-muted: #59636e;
+  --obi-border: #d1d9e0;
+  --obi-verified: #1a7f37;
+  --obi-unverified: #9a6700;
+  --obi-unverified-fill: #f5c542;
+  --obi-expired: #bc4c00;
+  --obi-invalid: #cf222e;
+  --obi-neutral: #6e7781;
+  --obi-accent: #0969da;
+  --obi-shadow: 0 8px 24px rgba(31, 35, 40, 0.18);
+}
+
+.layer,
+.toast {
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.45;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--obi-text);
+}
+
+@media (prefers-color-scheme: dark) {
+  :host {
+    --obi-surface: #1f2428;
+    --obi-text: #e6edf3;
+    --obi-muted: #9198a1;
+    --obi-border: #3d444d;
+    --obi-verified: #3fb950;
+    --obi-unverified: #d29922;
+    --obi-expired: #f0883e;
+    --obi-invalid: #f85149;
+    --obi-neutral: #8b949e;
+    --obi-accent: #4493f8;
+    --obi-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  }
+}
+
+.layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+}
+
+.marker {
+  position: absolute;
+  box-sizing: border-box;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  margin: 0;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font:
+    700 13px/1 system-ui,
+    sans-serif;
+  color: #ffffff;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+  pointer-events: auto;
+}
+
+.marker:focus-visible,
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--obi-accent);
+  outline-offset: 2px;
+}
+
+.marker.tone-verified {
+  background: var(--obi-verified);
+}
+.marker.tone-unverified {
+  background: var(--obi-unverified-fill);
+  color: #1f2328;
+}
+.marker.tone-expired {
+  background: var(--obi-expired);
+}
+.marker.tone-invalid {
+  background: var(--obi-invalid);
+}
+.marker.tone-neutral {
+  background: var(--obi-neutral);
+  opacity: 0.85;
+}
+
+.card:focus {
+  outline: none;
+}
+
+.card {
+  position: absolute;
+  box-sizing: border-box;
+  width: min(360px, calc(100vw - 24px));
+  max-height: min(520px, calc(100vh - 24px));
+  overflow: auto;
+  padding: 14px 16px 16px;
+  background: var(--obi-surface);
+  color: var(--obi-text);
+  border: 1px solid var(--obi-border);
+  border-top: 4px solid var(--obi-neutral);
+  border-radius: 10px;
+  box-shadow: var(--obi-shadow);
+  pointer-events: auto;
+  text-align: left;
+}
+
+.card.tone-verified {
+  border-top-color: var(--obi-verified);
+}
+.card.tone-unverified {
+  border-top-color: var(--obi-unverified-fill);
+}
+.card.tone-expired {
+  border-top-color: var(--obi-expired);
+}
+.card.tone-invalid {
+  border-top-color: var(--obi-invalid);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.badge-symbol {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 12px;
+  color: #ffffff;
+  background: var(--obi-neutral);
+}
+.tone-verified .badge-symbol {
+  background: var(--obi-verified);
+}
+.tone-unverified .badge-symbol {
+  background: var(--obi-unverified-fill);
+  color: #1f2328;
+}
+.tone-expired .badge-symbol {
+  background: var(--obi-expired);
+}
+.tone-invalid .badge-symbol {
+  background: var(--obi-invalid);
+}
+
+.title {
+  flex: 1;
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.close {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--obi-muted);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+.close:hover {
+  background: color-mix(in srgb, var(--obi-muted) 15%, transparent);
+}
+
+p {
+  margin: 0 0 8px;
+}
+
+.badge-name {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.badge-description,
+.note,
+.explanation {
+  color: var(--obi-muted);
+}
+
+.expired-banner {
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--obi-expired) 14%, transparent);
+  color: var(--obi-expired);
+  font-weight: 600;
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 4px 12px;
+  margin: 8px 0 12px;
+}
+.fields dt {
+  color: var(--obi-muted);
+}
+.fields dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.host {
+  color: var(--obi-muted);
+}
+
+a {
+  color: var(--obi-accent);
+}
+
+.checks-heading {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--obi-muted);
+}
+.checks {
+  list-style: none;
+  margin: 0 0 10px;
+  padding: 0;
+}
+.check {
+  display: grid;
+  grid-template-columns: 18px max-content 1fr;
+  gap: 2px 8px;
+  padding: 4px 0;
+  border-top: 1px solid var(--obi-border);
+}
+.check-symbol {
+  font-weight: 700;
+}
+.check-pass .check-symbol {
+  color: var(--obi-verified);
+}
+.check-fail .check-symbol {
+  color: var(--obi-invalid);
+}
+.check-not-run .check-symbol {
+  color: var(--obi-neutral);
+}
+.check-label {
+  font-weight: 600;
+}
+.check-reason {
+  color: var(--obi-muted);
+}
+.check-detail {
+  grid-column: 3;
+  font-size: 12px;
+  color: var(--obi-muted);
+  overflow-wrap: anywhere;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}
+button.primary {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 6px;
+  background: var(--obi-accent);
+  color: #ffffff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+button.primary:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+.link-button {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--obi-accent);
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.toast {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  max-width: 320px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--obi-surface);
+  color: var(--obi-text);
+  border: 1px solid var(--obi-border);
+  box-shadow: var(--obi-shadow);
+  pointer-events: auto;
+}
