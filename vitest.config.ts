@@ -6,7 +6,23 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
-    include: ["src/**/*.test.ts", "scripts/**/*.test.ts"],
     passWithNoTests: true,
+    projects: [
+      {
+        test: {
+          name: "node",
+          environment: "node",
+          include: ["src/**/*.test.ts", "scripts/**/*.test.ts", "tests/unit/**/*.test.ts"],
+          exclude: ["**/*.dom.test.ts"],
+        },
+      },
+      {
+        test: {
+          name: "dom",
+          environment: "jsdom",
+          include: ["src/**/*.dom.test.ts", "tests/unit/**/*.dom.test.ts"],
+        },
+      },
+    ],
   },
 });

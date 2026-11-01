@@ -8,3 +8,18 @@ version = 1
 path = ["package.json", "package-lock.json", "tsconfig.json", ".prettierrc.json", "manifest.json", "_locales/**/*.json", ".ai/specs/implemented/.gitkeep"]
 SPDX-FileCopyrightText = "2026 Damian Fajfer <damian@fajfer.org>"
 SPDX-License-Identifier = "EUPL-1.2"
+
+[[annotations]]
+path = ["src/verifiers/contexts/credentials-*.json", "src/verifiers/contexts/data-integrity-v2.json", "src/verifiers/contexts/multikey-v1.json", "tests/fixtures/w3c/**"]
+SPDX-FileCopyrightText = "World Wide Web Consortium"
+SPDX-License-Identifier = "W3C-20150513"
+
+[[annotations]]
+path = ["src/verifiers/contexts/ob-v3p0-*.json"]
+SPDX-FileCopyrightText = "1EdTech Consortium, Inc."
+SPDX-License-Identifier = "LicenseRef-1EdTech-Context"
+
+[[annotations]]
+path = ["tests/fixtures/png/**", "tests/fixtures/svg/**", "tests/fixtures/keys/**", "tests/fixtures/online/**"]
+SPDX-FileCopyrightText = "2026 Damian Fajfer <damian@fajfer.org>"
+SPDX-License-Identifier = "EUPL-1.2"

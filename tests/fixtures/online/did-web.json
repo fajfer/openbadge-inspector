@@ -1,0 +1,17 @@
+{
+  "@context": ["https://www.w3.org/ns/did/v1"],
+  "id": "did:web:university.example",
+  "verificationMethod": [
+    {
+      "id": "did:web:university.example#key-1",
+      "type": "JsonWebKey2020",
+      "controller": "did:web:university.example",
+      "publicKeyJwk": {
+        "kty": "OKP",
+        "crv": "Ed25519",
+        "x": "oSx53qlulXkFmwNakLasHbtSRFFDKaWQnO3VY9aJC9A"
+      }
+    }
+  ],
+  "assertionMethod": ["did:web:university.example#key-1"]
+}

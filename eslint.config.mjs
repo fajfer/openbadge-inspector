@@ -17,6 +17,7 @@ export default tseslint.config(
     },
     linterOptions: { noInlineConfig: true, reportUnusedDisableDirectives: "error" },
     rules: {
+      "@typescript-eslint/no-unused-vars": ["error", { ignoreRestSiblings: true, varsIgnorePattern: "^_" }],
       "no-eval": "error",
       "no-implied-eval": "error",
       "no-new-func": "error",
