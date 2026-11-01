@@ -16,7 +16,9 @@ inspection pipeline itself.
   `inspect`, `report`, `card-shown`, `open-options`. From extension pages only: `scan-tab`, `inspect-in-tab`,
   `get-tab-report` (used by the E2E suite).
 - `inspection.ts`: runs the registry; in-memory cache of URL results (300 entries); online only if the setting is on.
-- `fetch-image.ts`: re-fetches the image (`force-cache`, 10 MiB cap); tells `needs-permission` from `fetch-failed`.
+- `fetch-image.ts`: fallback for images the content script couldn't read (`force-cache`, 10 MiB cap); tells
+  `needs-permission` from `fetch-failed`. Background fetches don't get the tab's temporary access, so this needs a
+  host permission.
 - `permissions.ts`: on a menu click, asks synchronously for the image's origin when it differs from the tab's.
 - `tabs.ts`: injects `content.js`, sends requests, keeps per-tab reports, sets the toolbar badge count.
 - `auto-scan.ts`: registers or unregisters the auto-scan content script from settings and permissions.

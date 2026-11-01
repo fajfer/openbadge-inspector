@@ -87,3 +87,24 @@ export async function openExtensionPage(driver: WebDriver, path: string): Promis
   }
   throw new Error("Extension page did not open");
 }
+
+export async function clickToolbarButton(driver: WebDriver): Promise<string> {
+  const contexts = driver as unknown as ContextSwitchingDriver;
+  await contexts.setContext(firefox.Context.CHROME);
+  try {
+    return await driver.executeScript<string>(
+      `const browserWindow = Services.wm.getMostRecentWindow("navigator:browser");
+       const { ExtensionParent } = ChromeUtils.importESModule("resource://gre/modules/ExtensionParent.sys.mjs");
+       const extension = WebExtensionPolicy.getByID(arguments[0])?.extension;
+       const action = extension && ExtensionParent.apiManager.global.browserActionFor(extension);
+       if (!action) {
+         return "missing";
+       }
+       action.triggerAction(browserWindow);
+       return "triggered";`,
+      EXTENSION_ID,
+    );
+  } finally {
+    await contexts.setContext(firefox.Context.CONTENT);
+  }
+}

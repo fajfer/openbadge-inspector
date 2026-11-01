@@ -17,8 +17,16 @@ and drives the [ui](../ui/AGENTS.md) overlay.
   starts auto-scan.
 - `controller.ts`: per-element results, concurrency 4, markers, card, *Verify online*, reports to the background.
 - `discover.ts`: `<img>` (`currentSrc`), top-level inline `<svg>`, SVG `<object>`/`<embed>`; skips anything under
-  16×16. Inline SVG is serialised; `blob:` URLs are read here; other URLs are fetched by the background.
+  16×16. Inline SVG is serialised. Image URLs are read here first (`force-cache`), which works with only the
+  temporary tab access a toolbar or menu click gives; the background fetches only what the page can't (e.g.
+  cross-origin images without CORS).
 - `observe.ts`: MutationObserver (debounced) for images added later, auto mode only.
+
+## Gotchas
+
+- Bytes from `fetch` in a content script belong to the page's compartment: spreading or iterating them throws
+  "Permission denied to access property constructor". `copyBytes` copies them by index first.
+- MV3 content scripts have no `content.fetch`.
 
 ## Contracts
 

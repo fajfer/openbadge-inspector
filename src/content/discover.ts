@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: EUPL-1.2
 
+import { MAX_IMAGE_BYTES } from "../extractors/limits.ts";
 import type { InspectSource } from "../messaging/messages.ts";
 
 export const MIN_SIZE = 16;
@@ -64,20 +65,43 @@ export async function sourceFor(element: Candidate): Promise<InspectSource | und
   if (url === undefined) {
     return undefined;
   }
-  if (url.startsWith("blob:")) {
-    try {
-      const response = await fetch(url);
-      const bytes = new Uint8Array(await response.arrayBuffer());
-      return { kind: "inline", mime: response.headers.get("content-type") ?? "", base64: toBase64(bytes) };
-    } catch {
+  return (await readInPage(url)) ?? { kind: "url", url };
+}
+
+async function readInPage(url: string): Promise<InspectSource | undefined> {
+  if (!/^(https?|data|blob):/i.test(url)) {
+    return undefined;
+  }
+  try {
+    const response = await fetch(url, { cache: "force-cache", credentials: "same-origin" });
+    if (!response.ok) {
       return undefined;
     }
+    const declared = Number(response.headers.get("content-length") ?? "0");
+    if (declared > MAX_IMAGE_BYTES) {
+      return undefined;
+    }
+    const bytes = copyBytes(await response.arrayBuffer());
+    if (bytes.length > MAX_IMAGE_BYTES) {
+      return undefined;
+    }
+    return { kind: "inline", mime: response.headers.get("content-type") ?? "", base64: toBase64(bytes) };
+  } catch {
+    return undefined;
   }
-  return { kind: "url", url };
 }
 
 export function describeSource(element: Candidate): string {
   return sourceUrl(element)?.slice(0, 2048) ?? `inline-svg:${element.id || String(element.childElementCount)}`;
+}
+
+function copyBytes(buffer: ArrayBuffer): Uint8Array {
+  const source = new Uint8Array(buffer);
+  const copy = new Uint8Array(source.length);
+  for (let index = 0; index < source.length; index += 1) {
+    copy[index] = source[index] ?? 0;
+  }
+  return copy;
 }
 
 function toBase64(bytes: Uint8Array): string {

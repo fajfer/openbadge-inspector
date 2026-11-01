@@ -20,14 +20,17 @@ Fixtures and test tooling ([ADR-011](../.ai/adr/ADR-011-vitest-and-selenium.md))
 - `fixtures/w3c/`: W3C `vc-di-eddsa` test vectors (W3C licence, see `REUSE.toml`).
 - `e2e/`: `firefox.ts` (Selenium + geckodriver, extension installed as a temporary add-on, extension pages opened
   through the chrome context), `server.ts` (fixtures on `127.0.0.1:8765` and `localhost:8766`),
-  `extension.e2e.ts`.
+  `session.ts` (shared helpers), `extension.e2e.ts`, and `temporary-access.e2e.ts` (fresh profile, no optional
+  permissions, the real toolbar action triggered through Firefox's `browserActionFor(...).triggerAction`).
 
 ## Contracts
 
 - Pass a fixed `now` (`FIXTURE_NOW`); never compare with the real clock. Gallery badges are valid until 2031.
 - No test makes a real network request: online verifiers get `fakeHttp`.
-- Selenium can't click native menus or the toolbar; E2E sends `scan-tab` / `inspect-in-tab` from the options page,
-  which run the same code paths.
+- Selenium can't click native menus; E2E sends `inspect-in-tab` from the options page. The toolbar is triggered for
+  real in `temporary-access.e2e.ts`.
+- Every user flow must also pass with only the default permissions. Don't grant `<all_urls>` before a scenario that
+  a fresh install would run without it.
 - 1EdTech samples are not included: their repository states no licence.
 
 ## Validate
