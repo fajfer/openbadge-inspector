@@ -5,7 +5,7 @@
 import type { BadgeSummary, VerificationCheck, Verifier } from "../../registry/types.ts";
 import { isJsonObject, readString } from "../../shared/json.ts";
 import { check } from "../checks.ts";
-import { verifyDataIntegrity } from "../crypto/data-integrity.ts";
+import { findAssertionProof, verifyDataIntegrity } from "../crypto/data-integrity.ts";
 import { keyFromDidKey, keyFromJwk, type VerificationKey } from "../crypto/keys.ts";
 import { verifyCompactJws } from "../crypto/signatures.ts";
 
@@ -24,12 +24,21 @@ async function offlineAuthenticity(summary: BadgeSummary): Promise<VerificationC
     case "none":
       return check("authenticity", "fail", "signature-invalid", "The credential has no proof");
     case "data-integrity":
-      return summary.document === undefined
-        ? check("authenticity", "fail", "signature-invalid")
-        : verifyDataIntegrity(summary.document, (method) => Promise.resolve(keyFromDidKey(method)));
+      if (summary.document === undefined) {
+        return check("authenticity", "fail", "signature-invalid");
+      }
+      if (needsRemoteKey(summary.document)) {
+        return check("authenticity", "not-run", "needs-online");
+      }
+      return verifyDataIntegrity(summary.document, (method) => Promise.resolve(keyFromDidKey(method)));
     case "vc-jwt":
       return verifyVcJwtOffline(summary);
   }
+}
+
+function needsRemoteKey(document: NonNullable<BadgeSummary["document"]>): boolean {
+  const method = readString(findAssertionProof(document), "verificationMethod");
+  return method !== undefined && keyFromDidKey(method) === undefined;
 }
 
 export function embeddedJwtKey(summary: BadgeSummary): VerificationKey | undefined {
