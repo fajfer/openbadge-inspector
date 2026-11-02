@@ -31,8 +31,8 @@ const verified: InspectionResult = {
   mode: "offline",
 };
 
-function render(result: InspectionResult, onlineEnabled = false): HTMLElement {
-  return renderCard({ result, onlineEnabled, verifying: false }, actions, t);
+function render(result: InspectionResult): HTMLElement {
+  return renderCard({ result, verifying: false }, actions, t);
 }
 
 describe("renderCard", () => {
@@ -63,7 +63,6 @@ describe("renderCard", () => {
       {
         result: { ...verified, status: "unreadable", unreadableReason: "needs-permission" },
         sourceOrigin: "https://cdn.example",
-        onlineEnabled: false,
         verifying: false,
       },
       actions,
@@ -82,19 +81,35 @@ describe("renderCard", () => {
     expect(card.classList.contains("tone-expired")).toBe(true);
   });
 
-  it("points to the settings when online checks are possible but disabled", () => {
+  it("always offers the online check when one applies", () => {
     const card = render({ ...verified, onlineAvailable: true });
-    expect(card.querySelector("button.primary")).toBeNull();
-    card.querySelector<HTMLButtonElement>(".link-button")?.click();
-    expect(actions.onOpenSettings).toHaveBeenCalled();
-  });
-
-  it("offers the online check when enabled", () => {
-    const card = render({ ...verified, onlineAvailable: true }, true);
     const button = card.querySelector<HTMLButtonElement>("button.primary");
     expect(button?.textContent).toBe("buttonVerifyOnline");
     button?.click();
     expect(actions.onVerifyOnline).toHaveBeenCalled();
+  });
+
+  it("offers no online check when none applies", () => {
+    expect(render(verified).querySelector("button.primary")).toBeNull();
+  });
+
+  it("confirms a completed online check", () => {
+    const card = render({ ...verified, onlineAvailable: true, mode: "online" });
+    expect(card.querySelector(".online-done")?.textContent).toBe("onlineChecked");
+    expect(card.querySelector("button.primary")).toBeNull();
+  });
+
+  it("explains a blocking issuer and offers the settings and a retry", () => {
+    const card = render({
+      ...verified,
+      onlineAvailable: true,
+      mode: "online",
+      blockedOrigins: ["https://api.credly.com"],
+    });
+    expect(card.textContent).toContain("onlineBlocked(api.credly.com)");
+    expect(card.querySelector("button.primary")?.textContent).toBe("buttonVerifyAgain");
+    card.querySelector<HTMLButtonElement>("button.secondary")?.click();
+    expect(actions.onOpenSettings).toHaveBeenCalled();
   });
 
   it("is an accessible dialog", () => {

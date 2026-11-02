@@ -145,4 +145,5 @@ export interface InspectionResult {
   readonly payloadCount: number;
   readonly onlineAvailable: boolean;
   readonly mode: VerificationMode;
+  readonly blockedOrigins?: readonly string[];
 }

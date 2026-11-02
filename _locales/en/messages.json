@@ -241,9 +241,6 @@
   "buttonSettings": {
     "message": "Settings"
   },
-  "onlineHint": {
-    "message": "Turn on online verification in the settings to check this badge with its issuer."
-  },
   "onlineChecked": {
     "message": "Checked with the issuer just now."
   },
@@ -299,12 +296,6 @@
   "optionAutoScanHelp": {
     "message": "Marks badges as soon as a page loads. Needs access to all websites. When this is off, scan a page with the toolbar button or right-click an image."
   },
-  "optionOnline": {
-    "message": "Allow online verification"
-  },
-  "optionOnlineHelp": {
-    "message": "Adds a “Verify online” button to badges. The issuer's servers are contacted only when you click it, and they can see that you checked the badge. Needs access to all websites."
-  },
   "optionNotBakedIcons": {
     "message": "Mark images that aren't badges"
   },
@@ -316,5 +307,25 @@
   },
   "optionsPrivacy": {
     "message": "OpenBadge Inspector reads image metadata on your device. It collects no data and sends nothing anywhere unless you click “Verify online”."
+  },
+  "onlineBlocked": {
+    "message": "$HOSTS$ doesn't let browser extensions read its badge data. Allow online checks to reach every issuer in the settings, then verify again.",
+    "placeholders": {
+      "hosts": {
+        "content": "$1"
+      }
+    }
+  },
+  "buttonVerifyAgain": {
+    "message": "Verify again"
+  },
+  "buttonAllowInSettings": {
+    "message": "Allow in settings"
+  },
+  "optionReachAllIssuers": {
+    "message": "Let online checks reach every issuer"
+  },
+  "optionReachAllIssuersHelp": {
+    "message": "“Verify online” works without this for most issuers. Some issuers block browser extensions from reading badge data; turning this on gives the extension access to all websites so those can be checked too. Issuers are still contacted only when you click “Verify online”, and they can see that you checked the badge."
   }
 }

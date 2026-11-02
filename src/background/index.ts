@@ -4,7 +4,6 @@
 
 import { type BackgroundRequest, backgroundRequestSchema } from "../messaging/messages.ts";
 import { translate } from "../shared/i18n.ts";
-import { getSettings } from "../settings/store.ts";
 import { syncAutoScan } from "./auto-scan.ts";
 import { inspectSource } from "./inspection.ts";
 import { requestImageOrigin } from "./permissions.ts";
@@ -57,10 +56,8 @@ browser.runtime.onMessage.addListener((message: unknown, sender: browser.runtime
 async function handle(request: BackgroundRequest, sender: browser.runtime.MessageSender): Promise<unknown> {
   const tabId = sender.tab?.id;
   switch (request.type) {
-    case "inspect": {
-      const settings = await getSettings();
-      return inspectSource(request.source, request.online && settings.onlineVerification, sender.tab?.url);
-    }
+    case "inspect":
+      return inspectSource(request.source, request.online, sender.tab?.url);
     case "report":
       if (tabId !== undefined) {
         storeImages(tabId, request.images);
@@ -77,7 +74,7 @@ async function handle(request: BackgroundRequest, sender: browser.runtime.Messag
       return fromExtensionPage(sender) ? runInTab(request.tabId, { type: "scan-page" }) : undefined;
     case "inspect-in-tab":
       return fromExtensionPage(sender)
-        ? runInTab(request.tabId, { type: "inspect-image", srcUrl: request.srcUrl })
+        ? runInTab(request.tabId, { type: "inspect-image", srcUrl: request.srcUrl, online: request.online === true })
         : undefined;
     case "get-tab-report":
       return fromExtensionPage(sender) ? reportFor(request.tabId) : undefined;

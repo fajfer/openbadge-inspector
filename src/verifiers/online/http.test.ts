@@ -3,7 +3,8 @@
 // SPDX-License-Identifier: EUPL-1.2
 
 import { describe, expect, it, vi } from "vitest";
-import { createHttpClient, MAX_RESPONSE_BYTES } from "./http.ts";
+import { fakeHttp } from "../../../tests/fixtures/fake-http.ts";
+import { createHttpClient, MAX_RESPONSE_BYTES, trackBlockedOrigins } from "./http.ts";
 
 function respond(body: string, url = "https://issuer.example/a.json", status = 200): Response {
   const response = new Response(body, { status });
@@ -39,5 +40,23 @@ describe("createHttpClient", () => {
   it("maps network errors to status 0", async () => {
     const fetchSpy = vi.fn<typeof fetch>().mockRejectedValue(new TypeError("offline"));
     expect(await createHttpClient(fetchSpy).getJson("https://issuer.example/a.json")).toEqual({ status: 0 });
+  });
+});
+
+describe("trackBlockedOrigins", () => {
+  it("records origins whose requests failed without permission", async () => {
+    const client = trackBlockedOrigins(
+      fakeHttp({
+        "https://blocked.example/a.json": { status: 0 },
+        "https://down.example/a.json": { status: 0 },
+        "https://fine.example/a.json": { status: 200, json: {} },
+      }),
+      (origin) => Promise.resolve(origin === "https://blocked.example"),
+    );
+    await client.getJson("https://blocked.example/a.json");
+    await client.getJson("https://blocked.example/a.json");
+    await client.getJson("https://down.example/a.json");
+    await client.getJson("https://fine.example/a.json");
+    expect(client.blockedOrigins()).toEqual(["https://blocked.example"]);
   });
 });

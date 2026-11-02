@@ -307,6 +307,18 @@ button.primary:disabled {
   opacity: 0.6;
   cursor: progress;
 }
+button.secondary {
+  padding: 6px 14px;
+  border: 1px solid var(--obi-border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--obi-text);
+  font: inherit;
+  cursor: pointer;
+}
+.actions {
+  gap: 8px;
+}
 .link-button {
   padding: 0;
   border: none;

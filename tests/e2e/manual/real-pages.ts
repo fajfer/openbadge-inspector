@@ -47,6 +47,26 @@ for (const url of process.argv.slice(2)) {
     ).card;
     process.stdout.write(`  card for ${image.source.slice(0, 80)}: ${card?.text ?? "none"}\n`);
   }
+  const unverified = report.images.filter((image) => image.status === "unverified").slice(0, 3);
+  for (const image of unverified) {
+    await inExtension(
+      driver,
+      "await browser.tabs.sendMessage(args[0], { type: 'inspect-image', srcUrl: args[1], online: true });",
+      tabId,
+      image.source,
+    );
+    await driver.sleep(5000);
+    const card = (
+      await inExtension<TabReport>(
+        driver,
+        "return await browser.runtime.sendMessage({ type: 'get-tab-report', tabId: args[0] });",
+        tabId,
+      )
+    ).card;
+    process.stdout.write(
+      `  verify online ${image.source.slice(0, 80)}: ${card?.status ?? "none"} ${card?.text ?? ""}\n`,
+    );
+  }
   await driver.switchTo().window(page);
 }
 await driver.quit();

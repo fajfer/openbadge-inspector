@@ -6,7 +6,7 @@ import { z } from "zod";
 
 export const settingsSchema = z.object({
   autoScan: z.boolean().catch(false),
-  onlineVerification: z.boolean().catch(false),
+  reachAllIssuers: z.boolean().catch(false),
   showNotBakedMarkers: z.boolean().catch(true),
 });
 

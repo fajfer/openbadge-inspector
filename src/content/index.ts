@@ -40,7 +40,7 @@ function start(): void {
     const request = parsed.data;
     return request.type === "scan-page"
       ? controller.scanPage(true)
-      : controller.inspectImage(request.targetElementId, request.srcUrl);
+      : controller.inspectImage(request.targetElementId, request.srcUrl, request.online === true);
   });
 
   void getSettings().then((settings) => {

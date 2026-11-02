@@ -7,14 +7,14 @@ import { parseSettings } from "./settings.schema.ts";
 
 describe("parseSettings", () => {
   it("uses defaults for empty storage", () => {
-    expect(parseSettings({})).toEqual({ autoScan: false, onlineVerification: false, showNotBakedMarkers: true });
+    expect(parseSettings({})).toEqual({ autoScan: false, reachAllIssuers: false, showNotBakedMarkers: true });
     expect(parseSettings(undefined)).toEqual(parseSettings({}));
   });
 
   it("falls back per key when a stored value is invalid", () => {
-    expect(parseSettings({ autoScan: "yes", onlineVerification: true, showNotBakedMarkers: 0 })).toEqual({
+    expect(parseSettings({ autoScan: "yes", reachAllIssuers: true, showNotBakedMarkers: 0 })).toEqual({
       autoScan: false,
-      onlineVerification: true,
+      reachAllIssuers: true,
       showNotBakedMarkers: true,
     });
   });

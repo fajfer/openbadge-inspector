@@ -23,7 +23,7 @@ Decisions that future work must respect. Read an ADR only when the Task Router, 
 | [ADR-002](ADR-002-no-code-comments.md) | No comments in source code | Accepted | 2026-11-01 |
 | [ADR-003](ADR-003-baked-only-detection.md) | Detect only baked Open Badges 2.0 and 3.0 in PNG and SVG | Superseded by ADR-017 | 2026-11-01 |
 | [ADR-004](ADR-004-on-demand-scanning.md) | On-demand scanning by default | Accepted | 2026-11-01 |
-| [ADR-005](ADR-005-offline-first-verification.md) | Offline-first verification; online checks only on an explicit click | Accepted | 2026-11-01 |
+| [ADR-005](ADR-005-offline-first-verification.md) | Offline-first verification; online checks only on an explicit click | Superseded by ADR-018 | 2026-11-01 |
 | [ADR-006](ADR-006-overlay-card-and-status-icons.md) | Shadow-DOM overlay card, corner status icons, careful non-baked wording | Accepted | 2026-11-01 |
 | [ADR-007](ADR-007-mv3-desktop-esr.md) | Manifest V3, Firefox desktop ESR 140+ | Accepted | 2026-11-01 |
 | [ADR-008](ADR-008-typescript-zod-vite-web-ext.md) | TypeScript, Zod, Vite and web-ext, no UI framework | Accepted | 2026-11-01 |
@@ -36,3 +36,4 @@ Decisions that future work must respect. Read an ADR only when the Task Router, 
 | [ADR-015](ADR-015-no-eval-in-bundle.md) | Remove eval paths from dependencies at build time | Accepted | 2026-11-02 |
 | [ADR-016](ADR-016-slsa-build-l3-releases.md) | SLSA Build L3 releases with SBOMs | Accepted | 2026-11-02 |
 | [ADR-017](ADR-017-baked-only-with-lenient-png-chunks.md) | Baked badges only, with lenient PNG text chunks | Accepted | 2026-11-02 |
+| [ADR-018](ADR-018-verify-online-on-click.md) | Offline-first verification; a click on Verify online is the consent | Accepted | 2026-11-02 |

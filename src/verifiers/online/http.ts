@@ -44,6 +44,30 @@ export function createHttpClient(fetchImpl: typeof fetch = fetch): HttpClient {
   };
 }
 
+export interface TrackedHttpClient extends HttpClient {
+  readonly blockedOrigins: () => readonly string[];
+}
+
+export function trackBlockedOrigins(
+  client: HttpClient,
+  isBlocked: (origin: string) => Promise<boolean>,
+): TrackedHttpClient {
+  const blocked = new Set<string>();
+  return {
+    async getJson(url) {
+      const response = await client.getJson(url);
+      if (response.status === NETWORK_ERROR_STATUS && isHttpsUrl(url)) {
+        const origin = new URL(url).origin;
+        if (await isBlocked(origin)) {
+          blocked.add(origin);
+        }
+      }
+      return response;
+    },
+    blockedOrigins: () => [...blocked],
+  };
+}
+
 export function isHttpsUrl(url: string): boolean {
   try {
     return new URL(url).protocol === "https:";

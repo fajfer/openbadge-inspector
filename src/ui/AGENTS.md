@@ -20,6 +20,8 @@ Everything the user sees on a page ([ADR-006](../../.ai/adr/ADR-006-overlay-card
 
 ## Contracts
 
+- *Verify online* is shown whenever `onlineAvailable`; after an online run with `blockedOrigins` the card offers
+  *Allow in settings* and *Verify again* ([ADR-018](../../.ai/adr/ADR-018-verify-online-on-click.md)).
 - Not baked → only `notBakedExplanation` (wording fixed by ADR-006). Expired → orange with "Expired on <date>".
 - Links only for `https:` URLs, with `rel="noopener noreferrer"`.
 - Typography is set on `.layer`/`.toast`, not `:host`: the host's inline `all: initial` beats `:host`.
