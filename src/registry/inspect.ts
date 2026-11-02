@@ -41,7 +41,10 @@ export async function verifyPayload(
   context: InspectionContext,
 ): Promise<InspectionResult> {
   let badge = parsePayload(registry, payload);
-  let checks: VerificationCheck[] = [];
+  let checks: VerificationCheck[] =
+    payload.nonStandard === undefined
+      ? []
+      : [{ id: "baking", status: "warn", reason: "non-standard-baking", detail: payload.nonStandard }];
   const offline = registry.verifiers.filter((verifier) => verifier.mode === "offline");
   const online = registry.verifiers.filter((verifier) => verifier.mode === "online");
   for (const stage of context.mode === "online" ? [offline, online] : [offline]) {

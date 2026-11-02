@@ -4,7 +4,7 @@
 
 import type { BadgeStatus, CheckId, VerificationCheck } from "./types.ts";
 
-const CHECK_ORDER: readonly CheckId[] = ["schema", "authenticity", "revocation", "issued", "expiry"];
+const CHECK_ORDER: readonly CheckId[] = ["baking", "schema", "authenticity", "revocation", "issued", "expiry"];
 
 export function deriveStatus(checks: readonly VerificationCheck[]): BadgeStatus {
   const failures = checks.filter((check) => check.status === "fail");

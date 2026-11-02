@@ -5,7 +5,7 @@ SPDX-License-Identifier: EUPL-1.2
 -->
 # ADR-003: Detect only baked Open Badges 2.0 and 3.0 in PNG and SVG
 
-- **Status:** Accepted
+- **Status:** Superseded by ADR-017
 - **Date:** 2026-11-01
 - **Evidence:** maintainer decision during the project questionnaire, 2026-11-01
 - **Supersedes:** none

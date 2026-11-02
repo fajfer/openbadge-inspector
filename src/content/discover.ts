@@ -61,10 +61,11 @@ export async function sourceFor(element: Candidate): Promise<InspectSource | und
     const text = new XMLSerializer().serializeToString(element);
     return { kind: "inline", mime: SVG_MIME, base64: toBase64(new TextEncoder().encode(text)) };
   }
-  const url = sourceUrl(element);
-  if (url === undefined) {
+  const original = sourceUrl(element);
+  if (original === undefined) {
     return undefined;
   }
+  const url = upgradeInsecureUrl(original, element.ownerDocument.URL);
   return (await readInPage(url)) ?? { kind: "url", url };
 }
 
@@ -89,6 +90,13 @@ async function readInPage(url: string): Promise<InspectSource | undefined> {
   } catch {
     return undefined;
   }
+}
+
+export function upgradeInsecureUrl(url: string, pageUrl: string): string {
+  if (!url.startsWith("http:") || !pageUrl.startsWith("https:")) {
+    return url;
+  }
+  return `https:${url.slice("http:".length)}`;
 }
 
 export function describeSource(element: Candidate): string {

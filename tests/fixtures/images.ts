@@ -29,6 +29,11 @@ export function itxtChunk(keyword: string, text: string, compressed = false): Ui
   return pngChunk("iTXt", concatBytes(header, body));
 }
 
+export function ztxtChunk(keyword: string, text: string): Uint8Array<ArrayBuffer> {
+  const compressed = new Uint8Array(deflateSync(utf8Encode(text)));
+  return pngChunk("zTXt", concatBytes(utf8Encode(keyword), Uint8Array.from([0, 0]), compressed));
+}
+
 export function textChunk(keyword: string, text: string): Uint8Array<ArrayBuffer> {
   return pngChunk("tEXt", concatBytes(utf8Encode(keyword), Uint8Array.from([0]), utf8Encode(text)));
 }

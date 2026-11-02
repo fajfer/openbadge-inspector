@@ -113,6 +113,9 @@
   "checksHeading": {
     "message": "Checks"
   },
+  "checkBaking": {
+    "message": "Storage"
+  },
   "checkSchema": {
     "message": "Structure"
   },
@@ -131,11 +134,17 @@
   "checkPass": {
     "message": "Passed"
   },
+  "checkWarn": {
+    "message": "Warning"
+  },
   "checkFail": {
     "message": "Failed"
   },
   "checkNotRun": {
     "message": "Not checked"
+  },
+  "reasonNonStandardBaking": {
+    "message": "Stored in a non-standard place, so other tools may not find this badge."
   },
   "reasonSchemaValid": {
     "message": "Matches the Open Badges data model."

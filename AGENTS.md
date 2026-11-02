@@ -38,7 +38,7 @@ detail lives next to the code. Decisions live in [.ai/adr](.ai/adr/README.md).
 - Any new network request, or any change to when one is made ([ADR-005](.ai/adr/ADR-005-offline-first-verification.md)).
 - Adding a runtime dependency. Each one is shipped to users and reviewed by AMO; dev dependencies are fine.
 - Detecting anything other than baked PNG/SVG data, e.g. link-only Credly/Badgr badges, CSS backgrounds, iframes
-  ([ADR-003](.ai/adr/ADR-003-baked-only-detection.md)).
+  ([ADR-017](.ai/adr/ADR-017-baked-only-with-lenient-png-chunks.md)).
 
 ## Never
 
@@ -81,7 +81,7 @@ Shorthand: `<area>` means `<area>/AGENTS.md`. Read root + the listed files, noth
 
 | Task | Read |
 |---|---|
-| Read baked data out of a PNG or SVG file | [extractors](src/extractors/AGENTS.md), [ADR-003](.ai/adr/ADR-003-baked-only-detection.md), [ADR-010](.ai/adr/ADR-010-untrusted-input.md) |
+| Read baked data out of a PNG or SVG file | [extractors](src/extractors/AGENTS.md), [ADR-017](.ai/adr/ADR-017-baked-only-with-lenient-png-chunks.md), [ADR-010](.ai/adr/ADR-010-untrusted-input.md) |
 | OB 2.0 / OB 3.0 schema, parsing, `BadgeSummary` | [formats](src/formats/AGENTS.md) |
 | Signature, expiry, revocation, hosted check | [verifiers](src/verifiers/AGENTS.md), [ADR-005](.ai/adr/ADR-005-offline-first-verification.md), [ADR-014](.ai/adr/ADR-014-bundled-jsonld-canonicalisation.md) |
 | Add a new extractor, format or verifier | [registry](src/registry/AGENTS.md), [ADR-009](.ai/adr/ADR-009-plugin-registry.md) + the module's file |

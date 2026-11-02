@@ -8,12 +8,14 @@ SPDX-License-Identifier: EUPL-1.2
 ## Purpose
 
 Turn image bytes into zero or more `RawPayload`s without interpreting them; that's [formats](../formats/AGENTS.md).
-Scope: [ADR-003](../../.ai/adr/ADR-003-baked-only-detection.md). Input is hostile: [ADR-010](../../.ai/adr/ADR-010-untrusted-input.md).
+Scope: [ADR-017](../../.ai/adr/ADR-017-baked-only-with-lenient-png-chunks.md). Input is hostile: [ADR-010](../../.ai/adr/ADR-010-untrusted-input.md).
 
 ## Files
 
-- `png-itxt.ts`: walks PNG chunks, checks lengths and CRC32 of every chunk, stops at `IEND`, returns `iTXt` chunks
-  with keyword `openbadges` (inflating compressed ones with `DecompressionStream`). `tEXt` (OB 1.x) is ignored.
+- `png.ts`: walks PNG chunks, checks lengths and CRC32 of every chunk, stops at `IEND`. Returns the standard `iTXt`
+  "openbadges" payload, and non-standard `iTXt`/`zTXt`/`tEXt` "openbadge(s)" payloads that hold JSON or a JWS, marked
+  with `nonStandard` (the pipeline turns that into a `baking` warning). URL-only non-standard chunks (OB 1.x) are
+  ignored. Compressed text is inflated with `DecompressionStream`.
 - `svg.ts`: sniffs SVG, parses it with `DOMParser` as `image/svg+xml`, reads `assertion` and `credential` elements
   in the `http://openbadges.org` namespace (text/CDATA first, then the `verify` attribute). Falls back to the
   `openbadges:` tag name, which is what an inline SVG serialised from an HTML page looks like.

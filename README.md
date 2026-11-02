@@ -25,7 +25,11 @@ any web page and tells you whether they are real.
 | Open Badges 2.0, signed (JWS) | Schema, dates | Signature with the issuer's key, issuer revocation list |
 
 Badges are read from PNG `iTXt` chunks and SVG `openbadges:assertion` / `openbadges:credential` elements, in `<img>`,
-`<picture>`, inline `<svg>`, and SVG `<object>` / `<embed>`.
+`<picture>`, inline `<svg>`, and SVG `<object>` / `<embed>`. Badges that some tools store in other PNG text chunks
+(e.g. `zTXt` "openbadge") are read too, with a warning on the card.
+
+Badges shown on platforms such as Credly are usually plain images without badge data, so they show as *Not an Open
+Badge*. Download the baked badge and open it to inspect it.
 
 ## Privacy
 

@@ -21,6 +21,8 @@ export const FIXTURES: readonly FixtureEntry[] = [
   { file: "png/ob2-hosted.png", title: "OB 2.0 hosted assertion (embedded)", offlineStatus: "unverified" },
   { file: "png/ob2-hosted-url.png", title: "OB 2.0 hosted URL only", offlineStatus: "unverified" },
   { file: "png/ob2-signed.png", title: "OB 2.0 signed (JWS)", offlineStatus: "unverified" },
+  { file: "png/ob2-ztxt-openbadge.png", title: "OB 2.0 in a non-standard zTXt chunk", offlineStatus: "unverified" },
+  { file: "png/ob3-text-openbadges.png", title: "OB 3.0 in a non-standard tEXt chunk", offlineStatus: "verified" },
   { file: "png/malformed-json.png", title: "Baked but malformed JSON", offlineStatus: "invalid" },
   { file: "png/ob1-text.png", title: "OB 1.0 tEXt chunk (unsupported)", offlineStatus: "not-baked" },
   { file: "png/plain.png", title: "Plain PNG", offlineStatus: "not-baked" },

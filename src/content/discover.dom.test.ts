@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: EUPL-1.2
 
 import { describe, expect, it } from "vitest";
-import { discoverCandidates, isCandidate, sourceFor } from "./discover.ts";
+import { discoverCandidates, isCandidate, sourceFor, upgradeInsecureUrl } from "./discover.ts";
 
 function page(html: string): Document {
   const doc = new DOMParser().parseFromString(`<!doctype html><body>${html}</body>`, "text/html");
@@ -41,6 +41,17 @@ describe("discoverCandidates", () => {
 
   it("rejects non-image elements", () => {
     expect(isCandidate(document.createElement("div"))).toBe(false);
+  });
+});
+
+describe("upgradeInsecureUrl", () => {
+  it.each([
+    ["http://a.example/x.png", "https://page.example/", "https://a.example/x.png"],
+    ["http://a.example/x.png", "http://page.example/", "http://a.example/x.png"],
+    ["https://a.example/x.png", "https://page.example/", "https://a.example/x.png"],
+    ["data:image/png;base64,AA", "https://page.example/", "data:image/png;base64,AA"],
+  ])("%s on %s reads %s, like Firefox's mixed-content upgrade", (url, page, expected) => {
+    expect(upgradeInsecureUrl(url, page)).toBe(expected);
   });
 });
 

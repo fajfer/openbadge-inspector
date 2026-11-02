@@ -1,6 +1,6 @@
 {
   "name": "openbadge-inspector",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "Firefox extension that finds Open Badges baked into images and shows whether they are valid.",
   "license": "EUPL-1.2",
@@ -20,7 +20,8 @@
     "ext:lint": "web-ext lint -s dist",
     "test:e2e": "npm run build && vitest run --config vitest.e2e.config.ts",
     "fixtures": "node tests/fixtures/build-fixtures.ts",
-    "demo": "npm run build && node scripts/demo.ts"
+    "demo": "npm run build && node scripts/demo.ts",
+    "inspect-pages": "npm run build && node tests/e2e/manual/real-pages.ts"
   },
   "dependencies": {
     "jsonld": "^9.0.0",

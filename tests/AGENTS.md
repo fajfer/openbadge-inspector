@@ -23,6 +23,9 @@ Fixtures and test tooling ([ADR-011](../.ai/adr/ADR-011-vitest-and-selenium.md))
   `session.ts` (shared helpers), `extension.e2e.ts`, and `temporary-access.e2e.ts` (fresh profile, no optional
   permissions, the real toolbar action triggered through Firefox's `browserActionFor(...).triggerAction`).
 
+- `e2e/manual/real-pages.ts` (`npm run inspect-pages -- <url>...`): opens live pages in Firefox, clicks the toolbar
+  and prints what the extension found. Not part of CI, as it depends on third-party sites.
+
 ## Contracts
 
 - Pass a fixed `now` (`FIXTURE_NOW`); never compare with the real clock. Gallery badges are valid until 2031.

@@ -10,13 +10,14 @@ export interface ImageInput {
   readonly mimeHint?: string;
 }
 
-export type PayloadContainer = "png-itxt" | "svg-assertion" | "svg-credential";
+export type PayloadContainer = "png-itxt" | "png-text" | "svg-assertion" | "svg-credential";
 export type PayloadEncoding = "url" | "json" | "compact-jws" | "unknown";
 
 export interface RawPayload {
   readonly container: PayloadContainer;
   readonly encoding: PayloadEncoding;
   readonly text: string;
+  readonly nonStandard?: string;
 }
 
 export type ExtractErrorReason = "image-corrupt" | "image-too-large" | "payload-too-large";
@@ -69,10 +70,11 @@ export interface FormatParser {
   parse(payload: RawPayload): BadgeSummary;
 }
 
-export type CheckId = "schema" | "authenticity" | "revocation" | "issued" | "expiry";
-export type CheckStatus = "pass" | "fail" | "not-run";
+export type CheckId = "baking" | "schema" | "authenticity" | "revocation" | "issued" | "expiry";
+export type CheckStatus = "pass" | "warn" | "fail" | "not-run";
 
 export type CheckReason =
+  | "non-standard-baking"
   | "schema-valid"
   | "schema-invalid"
   | "signature-valid"

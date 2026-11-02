@@ -15,7 +15,7 @@ import {
   signDataIntegrity,
 } from "./credentials.ts";
 import { galleryHtml } from "./gallery.ts";
-import { itxtChunk, medalPng, medalSvg, type Palette, textChunk } from "./images.ts";
+import { itxtChunk, medalPng, medalSvg, type Palette, textChunk, ztxtChunk } from "./images.ts";
 import { loadTestKeys } from "./keys.ts";
 
 const ROOT = import.meta.dirname;
@@ -88,6 +88,11 @@ await write("png/ob2-hosted.png", bakedPng(BLUE, json(ob2Assertion({ embedded: t
 await write("png/ob2-hosted-url.png", bakedPng(BLUE, OB2_ASSERTION_URL));
 await write("png/ob2-signed.png", bakedPng(PURPLE, await ob2SignedJws(keys)));
 await write("png/malformed-json.png", bakedPng(RED, '{"@context": "https://w3id.org/openbadges/v2", "type": '));
+await write(
+  "png/ob2-ztxt-openbadge.png",
+  medalPng(BLUE, [ztxtChunk("openbadge", json(ob2Assertion({ embedded: true, signed: false })))]),
+);
+await write("png/ob3-text-openbadges.png", medalPng(GREEN, [textChunk("openbadges", json(rdfc))]));
 await write("png/ob1-text.png", medalPng(GREY, [textChunk("openbadges", OB2_ASSERTION_URL)]));
 await write("png/plain.png", medalPng(GREY));
 const corrupt = medalPng(GREY, [itxtChunk("openbadges", json(rdfc))]);
