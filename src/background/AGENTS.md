@@ -15,7 +15,8 @@ inspection pipeline itself.
 - `index.ts`: top-level listeners (menu, toolbar, messages, storage, permissions). Messages from content scripts:
   `inspect`, `report`, `card-shown`, `open-options`. From extension pages only: `scan-tab`, `inspect-in-tab`,
   `get-tab-report` (used by the E2E suite).
-- `inspection.ts`: runs the registry; in-memory cache of URL results (300 entries); online only if the setting is on.
+- `inspection.ts`: runs the registry; in-memory cache of offline URL results (300 entries). Online runs are never
+  cached and report `blockedOrigins` (failed requests to origins without a host permission).
 - `fetch-image.ts`: fallback for images the content script couldn't read (`force-cache`, 10 MiB cap); tells
   `needs-permission` from `fetch-failed`. Background fetches don't get the tab's temporary access, so this needs a
   host permission.

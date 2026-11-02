@@ -20,7 +20,6 @@ const MAX_DETAIL = 240;
 export interface CardModel {
   readonly result: InspectionResult;
   readonly sourceOrigin?: string;
-  readonly onlineEnabled: boolean;
   readonly verifying: boolean;
 }
 
@@ -168,23 +167,47 @@ function reasonText(check: VerificationCheck, t: Translate): string {
 
 function onlineFooter(model: CardModel, actions: CardActions, t: Translate): HTMLElement | undefined {
   const { result } = model;
-  if (result.mode === "online") {
+  const blocked = result.blockedOrigins ?? [];
+  if (result.mode === "online" && blocked.length === 0) {
     return element("p", "note online-done", t("onlineChecked"));
   }
   if (!result.onlineAvailable) {
     return undefined;
   }
-  if (!model.onlineEnabled) {
-    const settings = element("button", "link-button", t("buttonSettings"));
-    settings.type = "button";
-    settings.addEventListener("click", actions.onOpenSettings);
-    return element("p", "note", `${t("onlineHint")} `, settings);
+  const verify = button("primary", t(verifyLabel(model, blocked.length > 0)), actions.onVerifyOnline);
+  verify.disabled = model.verifying;
+  if (blocked.length === 0) {
+    return element("div", "actions", verify);
   }
-  const button = element("button", "primary", t(model.verifying ? "buttonVerifying" : "buttonVerifyOnline"));
-  button.type = "button";
-  button.disabled = model.verifying;
-  button.addEventListener("click", actions.onVerifyOnline);
-  return element("div", "actions", button);
+  const hosts = blocked.map((origin) => hostOf(origin)).join(", ");
+  return element(
+    "div",
+    "blocked",
+    element("p", "note", t("onlineBlocked", [hosts])),
+    element("div", "actions", button("secondary", t("buttonAllowInSettings"), actions.onOpenSettings), verify),
+  );
+}
+
+function verifyLabel(model: CardModel, retry: boolean): MessageKey {
+  if (model.verifying) {
+    return "buttonVerifying";
+  }
+  return retry ? "buttonVerifyAgain" : "buttonVerifyOnline";
+}
+
+function button(className: string, label: string, onClick: () => void): HTMLButtonElement {
+  const node = element("button", className, label);
+  node.type = "button";
+  node.addEventListener("click", onClick);
+  return node;
+}
+
+function hostOf(origin: string): string {
+  try {
+    return new URL(origin).host;
+  } catch {
+    return origin;
+  }
 }
 
 function closeButton(actions: CardActions, t: Translate): HTMLButtonElement {

@@ -22,7 +22,12 @@ export const backgroundRequestSchema = z.discriminatedUnion("type", [
   z.object({ type: z.literal("card-shown"), status: statusSchema, text: z.string().max(10_000) }),
   z.object({ type: z.literal("open-options") }),
   z.object({ type: z.literal("scan-tab"), tabId: z.number().int() }),
-  z.object({ type: z.literal("inspect-in-tab"), tabId: z.number().int(), srcUrl: z.string() }),
+  z.object({
+    type: z.literal("inspect-in-tab"),
+    tabId: z.number().int(),
+    srcUrl: z.string(),
+    online: z.boolean().optional(),
+  }),
   z.object({ type: z.literal("get-tab-report"), tabId: z.number().int() }),
 ]);
 
@@ -34,6 +39,7 @@ export const contentRequestSchema = z.discriminatedUnion("type", [
     type: z.literal("inspect-image"),
     targetElementId: z.number().int().optional(),
     srcUrl: z.string().optional(),
+    online: z.boolean().optional(),
   }),
 ]);
 

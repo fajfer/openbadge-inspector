@@ -34,8 +34,8 @@ Badges data baked into those images and shows what the badge really is.
 - PNG and SVG badges in normal images, `<picture>`, inline SVG and embedded SVG.
 
 **Privacy**
-Everything runs on your device. No data collection, no analytics. Issuers are contacted only if you turn on online
-verification and click **Verify online** on a badge.
+Everything runs on your device. No data collection, no analytics. Issuers are contacted only when you click
+**Verify online** on a badge.
 
 An image without badge data is labelled "Not an Open Badge". Some websites strip this data when they resize
 images, so a real badge can show up that way; the label says so.

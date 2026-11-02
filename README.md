@@ -34,7 +34,8 @@ Badge*. Download the baked badge and open it to inspect it.
 ## Privacy
 
 Everything happens on your device. The extension collects no data and has no analytics. It contacts a badge issuer
-only when you click *Verify online*, and that button exists only if you turned online verification on. See
+only when you click *Verify online* on a badge's card. Some issuers block browser extensions from reading their badge
+data; for those, the card offers to allow online checks to reach every issuer in the settings. See
 [PRIVACY.md](PRIVACY.md).
 
 ## Building from source

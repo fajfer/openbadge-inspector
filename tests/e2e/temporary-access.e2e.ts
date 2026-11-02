@@ -39,18 +39,27 @@ describe("without access to all websites", () => {
   });
 
   it("reads same-origin images, as after a toolbar click", async () => {
-    await clickOption("onlineVerification");
-    await clickOption("onlineVerification");
+    await clickOption("reachAllIssuers");
     const { tabId } = await openGallery();
     await message({ type: "inspect-in-tab", tabId, srcUrl: `${PAGE_BASE}/not-on-the-page.png` });
     expect((await message<TabReport>({ type: "get-tab-report", tabId })).images).toEqual([]);
-    expect(await onOptions<boolean>("return await browser.permissions.remove({ origins: ['<all_urls>'] });")).toBe(
-      true,
+    await clickOption("reachAllIssuers");
+    expect(await onOptions<boolean>("return await browser.permissions.contains({ origins: ['<all_urls>'] });")).toBe(
+      false,
     );
     await onOptions("await browser.tabs.sendMessage(args[0], { type: 'scan-page' });", tabId);
     const report = await waitForReport(tabId, galleryComplete);
     const expected = expectedStatuses();
     expected.set(CROSS_ORIGIN_IMAGE, "unreadable");
     assertStatuses(report, expected);
+
+    await onOptions(
+      "await browser.tabs.sendMessage(args[0], { type: 'inspect-image', srcUrl: args[1], online: true });",
+      tabId,
+      `${PAGE_BASE}/png/ob2-hosted.png`,
+    );
+    const blocked = await waitForReport(tabId, (current) => current.card?.text.includes("Verify again") === true);
+    expect(blocked.card?.text).toContain("issuer.example doesn't let browser extensions read its badge data.");
+    expect(blocked.card?.text).toContain("Allow in settings");
   });
 });

@@ -13,6 +13,7 @@ import {
   inspect,
   message,
   NOT_BAKED_TEXT,
+  PAGE_BASE,
   onOptions,
   openGallery,
   screenshot,
@@ -25,18 +26,19 @@ beforeAll(startSession);
 afterAll(stopSession);
 
 describe("OpenBadge Inspector in Firefox", () => {
-  it("starts with everything off and asks for access only when a setting needs it", async () => {
+  it("starts with everything off, asks for access only when a setting needs it and gives it back", async () => {
+    const hasAllUrls = () =>
+      onOptions<boolean>("return await browser.permissions.contains({ origins: ['<all_urls>'] });");
     const settings = await onOptions<Record<string, boolean>>("return await browser.storage.sync.get(null);");
     expect(settings).toEqual({});
-    expect(await onOptions<boolean>("return await browser.permissions.contains({ origins: ['<all_urls>'] });")).toBe(
-      false,
-    );
+    expect(await hasAllUrls()).toBe(false);
     await clickOption("autoScan");
+    expect(await hasAllUrls()).toBe(true);
     await clickOption("autoScan");
-    expect(await onOptions<boolean>("return await browser.permissions.contains({ origins: ['<all_urls>'] });")).toBe(
-      true,
-    );
+    expect(await hasAllUrls()).toBe(false);
     expect(await onOptions<unknown>("return await browser.storage.sync.get('autoScan');")).toEqual({ autoScan: false });
+    await clickOption("reachAllIssuers");
+    expect(await hasAllUrls()).toBe(true);
   });
 
   it("does nothing on a page until asked, then marks every image on demand", async () => {
@@ -72,8 +74,7 @@ describe("OpenBadge Inspector in Firefox", () => {
 
     const hosted = await inspect(tabId, "png/ob2-hosted.png");
     expect(hosted.status).toBe("unverified");
-    expect(hosted.text).toContain("Turn on online verification in the settings");
-    expect(hosted.text).not.toContain("Verify online");
+    expect(hosted.text).toContain("Verify online");
 
     const tampered = await inspect(tabId, "png/ob3-tampered.png");
     expect(tampered.status).toBe("invalid");
@@ -95,11 +96,18 @@ describe("OpenBadge Inspector in Firefox", () => {
     expect(await driver.takeScreenshot()).not.toEqual(before);
   });
 
-  it("offers online verification only after it is enabled", async () => {
-    await clickOption("onlineVerification");
+  it("contacts the issuer only when Verify online is clicked", async () => {
     const { tabId } = await openGallery();
     const hosted = await inspect(tabId, "png/ob2-hosted.png");
     expect(hosted.text).toContain("Verify online");
+    expect(hosted.text).not.toContain("Checked with the issuer");
+    await message({ type: "inspect-in-tab", tabId, srcUrl: `${PAGE_BASE}/png/ob2-hosted.png`, online: true });
+    const checked = await waitForReport(
+      tabId,
+      (report) => report.card?.text.includes("Checked with the issuer") === true,
+    );
+    expect(checked.card?.status).toBe("unverified");
+    expect(checked.card?.text).toContain("The issuer's copy couldn't be loaded.");
     expect(images.requests.every((path) => path.startsWith("/png/"))).toBe(true);
   });
 

@@ -5,7 +5,7 @@ SPDX-License-Identifier: EUPL-1.2
 -->
 # ADR-005: Offline-first verification; online checks only on an explicit click
 
-- **Status:** Accepted
+- **Status:** Superseded by ADR-018
 - **Date:** 2026-11-01
 - **Evidence:** maintainer decision during the project questionnaire, 2026-11-01
 - **Supersedes:** none

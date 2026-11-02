@@ -8,13 +8,14 @@ SPDX-License-Identifier: EUPL-1.2
 ## Purpose
 
 Produce `VerificationCheck`s for a `BadgeSummary`. Offline checks always run; online checks only after the user clicks
-*Verify online* with the setting on ([ADR-005](../../.ai/adr/ADR-005-offline-first-verification.md)).
+*Verify online* on that badge ([ADR-018](../../.ai/adr/ADR-018-verify-online-on-click.md)).
 
 ## Files
 
 - `offline/schema.ts`, `offline/dates.ts` (5-minute clock skew), `offline/authenticity.ts` (Data Integrity and
   VC-JWT with `did:key` or an embedded JWK; OB 2.0 → `needs-online`), `offline/revocation.ts` (`needs-online`).
 - `online/http.ts`: https only (also after redirects), 10 s timeout, 1 MiB cap, `credentials: "omit"`.
+  `trackBlockedOrigins` records origins whose requests failed for lack of a host permission.
 - `online/ob2-hosted.ts`: fetch the assertion, compare id/recipient/badge, `revoked` or HTTP 410, load badge class
   and issuer. `online/ob2-signed.ts`: key from `verification.creator`, key owner must be the issuer, revocation list.
 - `online/ob3-authenticity.ts`: `did:web` and HTTPS verification methods (Multikey or JWK).

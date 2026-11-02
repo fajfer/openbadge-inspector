@@ -1,6 +1,6 @@
 {
   "name": "openbadge-inspector",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "description": "Firefox extension that finds Open Badges baked into images and shows whether they are valid.",
   "license": "EUPL-1.2",

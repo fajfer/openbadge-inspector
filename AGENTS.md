@@ -35,7 +35,7 @@ detail lives next to the code. Decisions live in [.ai/adr](.ai/adr/README.md).
 - Anything that contradicts an Accepted ADR: propose a superseding ADR before changing code.
 - Adding a manifest permission or host permission, or changing when one is requested
   ([ADR-007](.ai/adr/ADR-007-mv3-desktop-esr.md)). Every permission is reviewed by AMO and shown to users.
-- Any new network request, or any change to when one is made ([ADR-005](.ai/adr/ADR-005-offline-first-verification.md)).
+- Any new network request, or any change to when one is made ([ADR-018](.ai/adr/ADR-018-verify-online-on-click.md)).
 - Adding a runtime dependency. Each one is shipped to users and reviewed by AMO; dev dependencies are fine.
 - Detecting anything other than baked PNG/SVG data, e.g. link-only Credly/Badgr badges, CSS backgrounds, iframes
   ([ADR-017](.ai/adr/ADR-017-baked-only-with-lenient-png-chunks.md)).
@@ -48,7 +48,7 @@ detail lives next to the code. Decisions live in [.ai/adr](.ai/adr/README.md).
 - Insert baked or fetched data into the page as HTML (`innerHTML`, `insertAdjacentHTML`, `outerHTML`), or render an
   SVG from a page as a live document. Use `textContent` and `DOMParser` ([ADR-010](.ai/adr/ADR-010-untrusted-input.md)).
 - Contact an issuer, key or DID URL without the setting enabled **and** an explicit user click
-  ([ADR-005](.ai/adr/ADR-005-offline-first-verification.md)).
+  ([ADR-018](.ai/adr/ADR-018-verify-online-on-click.md)).
 - Collect, store or send personal data, browsing history or telemetry. No analytics.
 - Call an image "fake". A non-baked image gets the careful wording from
   [ADR-006](.ai/adr/ADR-006-overlay-card-and-status-icons.md).
@@ -83,7 +83,7 @@ Shorthand: `<area>` means `<area>/AGENTS.md`. Read root + the listed files, noth
 |---|---|
 | Read baked data out of a PNG or SVG file | [extractors](src/extractors/AGENTS.md), [ADR-017](.ai/adr/ADR-017-baked-only-with-lenient-png-chunks.md), [ADR-010](.ai/adr/ADR-010-untrusted-input.md) |
 | OB 2.0 / OB 3.0 schema, parsing, `BadgeSummary` | [formats](src/formats/AGENTS.md) |
-| Signature, expiry, revocation, hosted check | [verifiers](src/verifiers/AGENTS.md), [ADR-005](.ai/adr/ADR-005-offline-first-verification.md), [ADR-014](.ai/adr/ADR-014-bundled-jsonld-canonicalisation.md) |
+| Signature, expiry, revocation, hosted check | [verifiers](src/verifiers/AGENTS.md), [ADR-018](.ai/adr/ADR-018-verify-online-on-click.md), [ADR-014](.ai/adr/ADR-014-bundled-jsonld-canonicalisation.md) |
 | Add a new extractor, format or verifier | [registry](src/registry/AGENTS.md), [ADR-009](.ai/adr/ADR-009-plugin-registry.md) + the module's file |
 | Find images on a page, status icons, lazy images | [content](src/content/AGENTS.md), [ADR-004](.ai/adr/ADR-004-on-demand-scanning.md) |
 | Info card look, text or fields | [ui](src/ui/AGENTS.md), [ADR-006](.ai/adr/ADR-006-overlay-card-and-status-icons.md) |

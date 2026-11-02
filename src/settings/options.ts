@@ -16,7 +16,7 @@ interface OptionDefinition {
 
 const OPTIONS: readonly OptionDefinition[] = [
   { key: "autoScan", label: "optionAutoScan", help: "optionAutoScanHelp", needsAllUrls: true },
-  { key: "onlineVerification", label: "optionOnline", help: "optionOnlineHelp", needsAllUrls: true },
+  { key: "reachAllIssuers", label: "optionReachAllIssuers", help: "optionReachAllIssuersHelp", needsAllUrls: true },
   { key: "showNotBakedMarkers", label: "optionNotBakedIcons", help: "optionNotBakedIconsHelp", needsAllUrls: false },
 ];
 
@@ -49,7 +49,10 @@ function renderOption(option: OptionDefinition, settings: Settings): HTMLElement
         error.hidden = false;
         return;
       }
-      await updateSettings({ [option.key]: input.checked });
+      const updated = await updateSettings({ [option.key]: input.checked });
+      if (!updated.autoScan && !updated.reachAllIssuers) {
+        await browser.permissions.remove({ origins: [ALL_URLS] });
+      }
     });
   });
   const row = document.createElement("div");

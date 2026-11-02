@@ -31,7 +31,7 @@ interface Entry {
 export interface Controller {
   scanPage(announce: boolean): Promise<void>;
   scanNew(): Promise<void>;
-  inspectImage(targetElementId: number | undefined, srcUrl: string | undefined): Promise<void>;
+  inspectImage(targetElementId: number | undefined, srcUrl: string | undefined, online: boolean): Promise<void>;
 }
 
 export function createController(deps: ControllerDeps): Controller {
@@ -81,15 +81,13 @@ export function createController(deps: ControllerDeps): Controller {
     deps.send({ type: "report", images });
   };
 
-  const showCard = async (element: Candidate | undefined, result: InspectionResult, entry: Entry | undefined) => {
-    const settings = await deps.settings();
+  const showCard = (element: Candidate | undefined, result: InspectionResult, entry: Entry | undefined) => {
     const url = element === undefined ? undefined : sourceUrl(element);
     const origin = url === undefined ? undefined : originOf(url);
     const card = deps.overlay.showCard(
       element,
       {
         result,
-        onlineEnabled: settings.onlineVerification,
         verifying: entry?.verifying ?? false,
         ...(origin === undefined ? {} : { sourceOrigin: origin }),
       },
@@ -112,7 +110,7 @@ export function createController(deps: ControllerDeps): Controller {
     const entry = entryFor(element);
     const result = entry.result ?? (await resolve(element, false));
     await mark(element, result, false);
-    await showCard(element, result, entry);
+    showCard(element, result, entry);
     report();
   };
 
@@ -122,12 +120,12 @@ export function createController(deps: ControllerDeps): Controller {
       return;
     }
     entry.verifying = true;
-    await showCard(element, entry.result, entry);
+    showCard(element, entry.result, entry);
     const result = await resolve(element, true);
     entry.verifying = false;
     await mark(element, result, false);
     if (deps.overlay.cardTarget() === element) {
-      await showCard(element, result, entry);
+      showCard(element, result, entry);
     }
     report();
   };
@@ -168,7 +166,7 @@ export function createController(deps: ControllerDeps): Controller {
     async scanNew() {
       await scan(discoverCandidates(deps.document).filter((element) => !entries.has(element)));
     },
-    async inspectImage(targetElementId, srcUrl) {
+    async inspectImage(targetElementId, srcUrl, online) {
       const target = targetElementId === undefined ? null : deps.targetElement(targetElementId);
       const element =
         target !== null && isCandidate(target)
@@ -176,11 +174,14 @@ export function createController(deps: ControllerDeps): Controller {
           : discoverCandidates(deps.document).find((candidate) => sourceUrl(candidate) === srcUrl);
       if (element !== undefined) {
         await openCard(element);
+        if (online) {
+          await verifyOnline(element);
+        }
         return;
       }
       if (srcUrl !== undefined) {
         const result = await deps.inspect({ kind: "url", url: srcUrl }, false);
-        await showCard(undefined, result, undefined);
+        showCard(undefined, result, undefined);
       }
     },
   };
