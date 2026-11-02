@@ -19,6 +19,34 @@ describe("svgExtractor", () => {
     expect(result).toMatchObject({ kind: "baked", payloads: [{ container: "svg-assertion", encoding: "json" }] });
   });
 
+  it.each(["svg/ob3-jcs.svg", "svg/ob3-legacy-namespace.svg"])("reads an OB 3.0 credential from %s", async (file) => {
+    const result = await svgExtractor.extract(fixtureInput(file));
+    expect(result).toMatchObject({ kind: "baked", payloads: [{ container: "svg-credential", encoding: "json" }] });
+  });
+
+  it("reads an OB 3.0 credential under any namespace prefix", async () => {
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:ob="https://purl.imsglobal.org/ob/v3p0">
+      <ob:credential verify="eyJhbGciOiJFZERTQSJ9.eyJpc3MiOiJkaWQ6a2V5In0.c2lnbmF0dXJl"></ob:credential>
+    </svg>`;
+    expect(await svgExtractor.extract({ bytes: utf8Encode(svg) })).toEqual({
+      kind: "baked",
+      payloads: [
+        {
+          container: "svg-credential",
+          encoding: "compact-jws",
+          text: "eyJhbGciOiJFZERTQSJ9.eyJpc3MiOiJkaWQ6a2V5In0.c2lnbmF0dXJl",
+        },
+      ],
+    });
+  });
+
+  it("ignores credential elements outside the Open Badges namespaces", async () => {
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:ob="https://example.org/other">
+      <ob:credential><![CDATA[{}]]></ob:credential>
+    </svg>`;
+    expect(await svgExtractor.extract({ bytes: utf8Encode(svg) })).toEqual({ kind: "not-baked" });
+  });
+
   it("falls back to the verify attribute", async () => {
     const result = await svgExtractor.extract(fixtureInput("svg/ob2-verify-url.svg"));
     expect(result).toEqual({

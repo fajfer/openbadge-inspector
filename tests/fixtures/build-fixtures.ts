@@ -37,8 +37,12 @@ function json(value: JsonObject): string {
   return JSON.stringify(value);
 }
 
-function bakedPng(palette: Palette, payload: string, compressed = false): Uint8Array {
-  return medalPng(palette, [itxtChunk("openbadges", payload, compressed)]);
+const OB2_KEYWORD = "openbadges";
+const OB3_KEYWORD = "openbadgecredential";
+const OB3_NAMESPACE = "https://purl.imsglobal.org/ob/v3p0";
+
+function bakedPng(palette: Palette, keyword: string, payload: string, compressed = false): Uint8Array {
+  return medalPng(palette, [itxtChunk(keyword, payload, compressed)]);
 }
 
 function svgCredential(payload: JsonObject): string {
@@ -77,32 +81,37 @@ const didWeb = await signDataIntegrity(
 );
 const tampered = { ...rdfc, name: "Open Badges Grandmaster" };
 
-await write("png/ob3-rdfc.png", bakedPng(GREEN, json(rdfc)));
-await write("png/ob3-rdfc-compressed.png", bakedPng(GREEN, json(rdfc), true));
-await write("png/ob3-vcjwt.png", bakedPng(BLUE, await ob3VcJwt(keys)));
-await write("png/ob3-revocable.png", bakedPng(GREEN, json(revocable)));
-await write("png/ob3-didweb.png", bakedPng(PURPLE, json(didWeb)));
-await write("png/ob3-expired.png", bakedPng(ORANGE, json(expired)));
-await write("png/ob3-tampered.png", bakedPng(RED, json(tampered)));
-await write("png/ob2-hosted.png", bakedPng(BLUE, json(ob2Assertion({ embedded: true, signed: false }))));
-await write("png/ob2-hosted-url.png", bakedPng(BLUE, OB2_ASSERTION_URL));
-await write("png/ob2-signed.png", bakedPng(PURPLE, await ob2SignedJws(keys)));
-await write("png/malformed-json.png", bakedPng(RED, '{"@context": "https://w3id.org/openbadges/v2", "type": '));
+await write("png/ob3-rdfc.png", bakedPng(GREEN, OB3_KEYWORD, json(rdfc)));
+await write("png/ob3-rdfc-compressed.png", bakedPng(GREEN, OB3_KEYWORD, json(rdfc), true));
+await write("png/ob3-vcjwt.png", bakedPng(BLUE, OB3_KEYWORD, await ob3VcJwt(keys)));
+await write("png/ob3-revocable.png", bakedPng(GREEN, OB3_KEYWORD, json(revocable)));
+await write("png/ob3-didweb.png", bakedPng(PURPLE, OB3_KEYWORD, json(didWeb)));
+await write("png/ob3-expired.png", bakedPng(ORANGE, OB3_KEYWORD, json(expired)));
+await write("png/ob3-tampered.png", bakedPng(RED, OB3_KEYWORD, json(tampered)));
+await write("png/ob2-hosted.png", bakedPng(BLUE, OB2_KEYWORD, json(ob2Assertion({ embedded: true, signed: false }))));
+await write("png/ob2-hosted-url.png", bakedPng(BLUE, OB2_KEYWORD, OB2_ASSERTION_URL));
+await write("png/ob2-signed.png", bakedPng(PURPLE, OB2_KEYWORD, await ob2SignedJws(keys)));
+await write(
+  "png/malformed-json.png",
+  bakedPng(RED, OB2_KEYWORD, '{"@context": "https://w3id.org/openbadges/v2", "type": '),
+);
 await write(
   "png/ob2-ztxt-openbadge.png",
   medalPng(BLUE, [ztxtChunk("openbadge", json(ob2Assertion({ embedded: true, signed: false })))]),
 );
 await write("png/ob3-text-openbadges.png", medalPng(GREEN, [textChunk("openbadges", json(rdfc))]));
 await write("png/ob1-text.png", medalPng(GREY, [textChunk("openbadges", OB2_ASSERTION_URL)]));
+await write("png/ob3-itxt-openbadges.png", bakedPng(GREEN, OB2_KEYWORD, json(rdfc)));
 await write("png/plain.png", medalPng(GREY));
-const corrupt = medalPng(GREY, [itxtChunk("openbadges", json(rdfc))]);
+const corrupt = medalPng(GREY, [itxtChunk(OB3_KEYWORD, json(rdfc))]);
 corrupt[40] = (corrupt[40] ?? 0) ^ 0xff;
 await write("png/corrupt-crc.png", corrupt);
 
-await write("svg/ob3-jcs.svg", medalSvg(GREEN, "OB 3.0", svgCredential(jcs)));
+await write("svg/ob3-jcs.svg", medalSvg(GREEN, "OB 3.0", svgCredential(jcs), "", OB3_NAMESPACE));
+await write("svg/ob3-legacy-namespace.svg", medalSvg(GREEN, "OB 3.0", svgCredential(jcs)));
 await write(
   "svg/ob3-with-script.svg",
-  medalSvg(GREEN, "Script", svgCredential(rdfc), "<script>document.title = 'executed';</script>"),
+  medalSvg(GREEN, "Script", svgCredential(rdfc), "<script>document.title = 'executed';</script>", OB3_NAMESPACE),
 );
 await write(
   "svg/ob2-assertion.svg",

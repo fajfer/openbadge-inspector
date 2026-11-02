@@ -35,5 +35,6 @@ Decisions that future work must respect. Read an ADR only when the Task Router, 
 | [ADR-014](ADR-014-bundled-jsonld-canonicalisation.md) | Bundle JSON-LD canonicalisation for offline eddsa-rdfc-2022 | Accepted | 2026-11-01 |
 | [ADR-015](ADR-015-no-eval-in-bundle.md) | Remove eval paths from dependencies at build time | Accepted | 2026-11-02 |
 | [ADR-016](ADR-016-slsa-build-l3-releases.md) | SLSA Build L3 releases with SBOMs | Accepted | 2026-11-02 |
-| [ADR-017](ADR-017-baked-only-with-lenient-png-chunks.md) | Baked badges only, with lenient PNG text chunks | Accepted | 2026-11-02 |
+| [ADR-017](ADR-017-baked-only-with-lenient-png-chunks.md) | Baked badges only, with lenient PNG text chunks | Superseded by ADR-019 | 2026-11-02 |
 | [ADR-018](ADR-018-verify-online-on-click.md) | Offline-first verification; a click on Verify online is the consent | Accepted | 2026-11-02 |
+| [ADR-019](ADR-019-ob3-baking-locations.md) | Read OB 3.0 baking locations from the spec | Accepted | 2026-11-02 |

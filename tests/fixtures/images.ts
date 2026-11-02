@@ -78,11 +78,17 @@ function isInStar(x: number, y: number, radius: number): boolean {
   return Math.hypot(x, y) < edge;
 }
 
-export function medalSvg(palette: Palette, label: string, metadata = "", extra = ""): string {
+export function medalSvg(
+  palette: Palette,
+  label: string,
+  metadata = "",
+  extra = "",
+  namespace = "http://openbadges.org",
+): string {
   const [rr, rg, rb] = palette.ring;
   const [fr, fg, fb] = palette.fill;
   return `<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:openbadges="http://openbadges.org" width="128" height="128" viewBox="0 0 128 128">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:openbadges="${namespace}" width="128" height="128" viewBox="0 0 128 128">
   ${metadata}
   <circle cx="64" cy="64" r="62" fill="rgb(${String(rr)},${String(rg)},${String(rb)})"/>
   <circle cx="64" cy="64" r="52" fill="rgb(${String(fr)},${String(fg)},${String(fb)})"/>
