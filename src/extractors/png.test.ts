@@ -33,6 +33,33 @@ describe("pngExtractor", () => {
   });
 
   it.each([
+    ["JSON", "{}", "json"],
+    ["a compact JWS", "eyJhbGciOiJFZERTQSJ9.eyJpc3MiOiJkaWQ6a2V5In0.c2lnbmF0dXJl", "compact-jws"],
+  ])("reads the OB 3.0 openbadgecredential iTXt chunk holding %s as standard", async (_label, text, encoding) => {
+    const bytes = medalPng(PALETTE, [itxtChunk("openbadgecredential", text)]);
+    expect(await pngExtractor.extract({ bytes })).toEqual({
+      kind: "baked",
+      payloads: [{ container: "png-itxt", encoding, text }],
+    });
+  });
+
+  it("reads a compressed openbadgecredential iTXt chunk", async () => {
+    const bytes = medalPng(PALETTE, [itxtChunk("openbadgecredential", "{}", true)]);
+    expect(await pngExtractor.extract({ bytes })).toEqual({
+      kind: "baked",
+      payloads: [{ container: "png-itxt", encoding: "json", text: "{}" }],
+    });
+  });
+
+  it("reads the OB 3.0 fixture baked as the spec says", async () => {
+    const result = await pngExtractor.extract(fixtureInput("png/ob3-rdfc.png"));
+    expect(result).toMatchObject({ kind: "baked", payloads: [{ container: "png-itxt", encoding: "json" }] });
+    expect(result).not.toHaveProperty("payloads.0.nonStandard");
+  });
+
+  it.each([
+    ["zTXt", "openbadgecredential", ztxtChunk("openbadgecredential", "{}")],
+    ["tEXt", "openbadgecredential", textChunk("openbadgecredential", "{}")],
     ["zTXt", "openbadge", ztxtChunk("openbadge", "{}")],
     ["tEXt", "openbadges", textChunk("openbadges", "{}")],
     ["iTXt", "openbadge", itxtChunk("openbadge", "{}")],
@@ -42,6 +69,11 @@ describe("pngExtractor", () => {
       kind: "baked",
       payloads: [{ container: "png-text", encoding: "json", text: "{}", nonStandard: `${type} "${keyword}"` }],
     });
+  });
+
+  it("ignores similar keywords that are not Open Badges keywords", async () => {
+    const bytes = medalPng(PALETTE, [itxtChunk("openbadgecredentials", "{}"), itxtChunk("OpenBadgeCredential", "{}")]);
+    expect(await pngExtractor.extract({ bytes })).toEqual({ kind: "not-baked" });
   });
 
   it("ignores non-standard chunks that hold only a URL", async () => {

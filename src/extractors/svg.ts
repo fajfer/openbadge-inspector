@@ -5,7 +5,7 @@
 import type { ExtractResult, Extractor, ImageInput, PayloadContainer, RawPayload } from "../registry/types.ts";
 import { utf8Decode } from "../shared/bytes.ts";
 import { classifyPayload } from "./classify.ts";
-import { MAX_IMAGE_BYTES, MAX_PAYLOAD_BYTES, OPEN_BADGES_NAMESPACE } from "./limits.ts";
+import { MAX_IMAGE_BYTES, MAX_PAYLOAD_BYTES, SVG_NAMESPACES } from "./limits.ts";
 
 const SNIFF_LENGTH = 1024;
 const SVG_MIME = "image/svg+xml";
@@ -53,7 +53,7 @@ function extractFromSvg(input: ImageInput): Promise<ExtractResult> {
 }
 
 function findOpenBadgesElements(document: Document, localName: string): Element[] {
-  const namespaced = [...document.getElementsByTagNameNS(OPEN_BADGES_NAMESPACE, localName)];
+  const namespaced = SVG_NAMESPACES.flatMap((namespace) => [...document.getElementsByTagNameNS(namespace, localName)]);
   if (namespaced.length > 0) {
     return namespaced;
   }

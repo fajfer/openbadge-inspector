@@ -6,7 +6,7 @@ import type { ExtractResult, Extractor, ImageInput, RawPayload } from "../regist
 import { byteStream, concatBytes, latin1Decode, startsWithBytes, utf8Decode } from "../shared/bytes.ts";
 import { classifyPayload } from "./classify.ts";
 import { crc32 } from "./crc32.ts";
-import { LENIENT_KEYWORDS, MAX_IMAGE_BYTES, MAX_PAYLOAD_BYTES, OPEN_BADGES_KEYWORD } from "./limits.ts";
+import { LENIENT_KEYWORDS, MAX_IMAGE_BYTES, MAX_PAYLOAD_BYTES, STANDARD_PNG_KEYWORDS } from "./limits.ts";
 
 const PNG_SIGNATURE = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a] as const;
 const CHUNK_HEADER_LENGTH = 8;
@@ -84,7 +84,7 @@ async function payloadFrom(chunk: PngChunk): Promise<RawPayload | undefined> {
   }
   const text = utf8Decode(await chunkText(chunk, keywordEnd));
   const encoding = classifyPayload(text);
-  if (chunk.type === "iTXt" && keyword === OPEN_BADGES_KEYWORD) {
+  if (chunk.type === "iTXt" && STANDARD_PNG_KEYWORDS.has(keyword)) {
     return { container: "png-itxt", encoding, text };
   }
   if (encoding !== "json" && encoding !== "compact-jws") {

@@ -64,6 +64,16 @@ describe("inspectImage on the fixture catalogue (offline)", () => {
     });
   });
 
+  it("asks for an online check, not a missing key, when the issuer key is on did:web", async () => {
+    const result = await inspectImage(registry, fixtureInput("png/ob3-didweb.png"), offline);
+    expect(result.status).toBe("unverified");
+    expect(result.onlineAvailable).toBe(true);
+    expect(result.checks.find((check) => check.id === "authenticity")).toMatchObject({
+      status: "not-run",
+      reason: "needs-online",
+    });
+  });
+
   it("treats a tampered credential as invalid", async () => {
     const result = await inspectImage(registry, fixtureInput("png/ob3-tampered.png"), offline);
     expect(result.checks.find((check) => check.id === "authenticity")).toMatchObject({

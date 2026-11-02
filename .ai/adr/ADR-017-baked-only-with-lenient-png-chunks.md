@@ -6,7 +6,7 @@ SPDX-License-Identifier: EUPL-1.2
 
 # ADR-017: Baked badges only, with lenient PNG text chunks
 
-- **Status:** Accepted
+- **Status:** Superseded by ADR-019
 - **Date:** 2026-11-02
 - **Evidence:** maintainer decisions of 2026-11-02 after testing odznaka.reszka.org (BadgeFed), Credly and imgur
 - **Supersedes:** ADR-003

@@ -21,6 +21,14 @@ If a lesson becomes a lasting rule, move it into the narrowest `AGENTS.md` it ap
 
 ## Entries
 
+### 2026-11-02: extractors, diagnosis
+
+- **Mistake:** a real OB 3.0 badge showed as "Not an Open Badge", and the agent blamed the hosting site for stripping
+  the data after checking with exiftool, without running the extension's own extractor on the served bytes. The
+  extension only read the OB 2.0 keyword.
+- **Rule:** when a badge is reported as not baked, run `pngExtractor`/`svgExtractor` on the exact bytes the page
+  serves before suspecting the site, and compare the baking location with the spec version of the payload.
+
 ### 2026-11-02: e2e, permissions
 
 - **Mistake:** the E2E suite granted `<all_urls>` before scanning, so the default flow (toolbar click with only
