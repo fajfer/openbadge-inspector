@@ -62,9 +62,9 @@ jobs:
           version="${GITHUB_REF_NAME#v}"
           "$SYFT" scan dir:. --exclude './artifacts/**' --exclude './dist/**' --quiet \
             -o "cyclonedx-json@1.6=artifacts/openbadge-inspector-$version.cdx.json" \
-            -o "spdx-json@2.3=artifacts/openbadge-inspector-$version.spdx.json"
+            -o "spdx-json@3.0=artifacts/openbadge-inspector-$version.spdx.json"
           jq -e '.specVersion == "1.6"' "artifacts/openbadge-inspector-$version.cdx.json" > /dev/null
-          jq -e '.spdxVersion == "SPDX-2.3"' "artifacts/openbadge-inspector-$version.spdx.json" > /dev/null
+          jq -e 'any(."@graph"[]; .type == "CreationInfo" and (.specVersion | startswith("3.0")))' "artifacts/openbadge-inspector-$version.spdx.json" > /dev/null
 
       - name: Hash release files
         id: hash

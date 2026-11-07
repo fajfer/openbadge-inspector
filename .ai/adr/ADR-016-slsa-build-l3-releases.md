@@ -19,7 +19,7 @@ SLSA Build L3 compliance, as in chronowarden.
 
 - `.github/workflows/release.yml` runs on `v*.*.*` tags. It checks that the tag matches `package.json` and
   `manifest.json`, builds and lints the extension, and produces the extension zip, the source zip for AMO review,
-  CycloneDX 1.6 and SPDX 2.3 SBOMs, and `SHA256SUMS`.
+  CycloneDX 1.6 and SPDX 3.0 SBOMs, and `SHA256SUMS`.
 - **SLSA Build L3** provenance comes from the `slsa-framework/slsa-github-generator` generic generator, referenced by
   tag (the SLSA verifier requires it; documented zizmor exception). No GitHub artifact attestations.
 - Release builds use no caches. All other actions are pinned by commit SHA.
